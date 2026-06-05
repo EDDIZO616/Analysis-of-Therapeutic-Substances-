@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Bank — Analysis of Therapeutic Drug Substances</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1e2d45;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --correct: #10b981;
+    --wrong: #ef4444;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --tag: #0e7490;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lora', serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ───── HEADER ───── */
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(0,229,255,0.06) 0%, transparent 100%);
+  }
+
+  .header-badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 0.3rem 1rem;
+    border-radius: 2px;
+    margin-bottom: 1.2rem;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+  }
+
+  header h1 span { color: var(--accent); }
+
+  header p {
+    font-size: 1rem;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ───── STATS BAR ───── */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ───── NAV TABS ───── */
+  .tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    background: rgba(11,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 1rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s;
+  }
+
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .tab-btn:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255,255,255,0.03);
+  }
+
+  /* ───── MAIN LAYOUT ───── */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ───── SECTION HEADING ───── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .icon-mcq { background: rgba(0,229,255,0.12); border: 1px solid rgba(0,229,255,0.25); }
+  .icon-sa { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25); }
+
+  .section-info h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+
+  .section-info p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 0.2rem;
+  }
+
+  /* ───── SCORE DASHBOARD ───── */
+  .score-dashboard {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .score-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .score-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent);
+  }
+
+  .score-total {
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .progress-wrap {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  .btn-reset {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+
+  /* ───── MCQ CARD ───── */
+  .mcq-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mcq-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+
+  .mcq-card.answered-correct::before { background: var(--correct); }
+  .mcq-card.answered-wrong::before { background: var(--wrong); }
+
+  .mcq-meta {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .mcq-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .mcq-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #67e8f9;
+    background: rgba(14,116,144,0.2);
+    border: 1px solid rgba(14,116,144,0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .mcq-q {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .option-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: all 0.2s;
+    width: 100%;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: rgba(0,229,255,0.05);
+  }
+
+  .option-btn:disabled { cursor: default; }
+
+  .option-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .option-btn.correct {
+    background: rgba(16,185,129,0.1);
+    border-color: var(--correct);
+  }
+
+  .option-btn.correct .option-letter {
+    background: var(--correct);
+    color: #fff;
+  }
+
+  .option-btn.wrong {
+    background: rgba(239,68,68,0.1);
+    border-color: var(--wrong);
+  }
+
+  .option-btn.wrong .option-letter {
+    background: var(--wrong);
+    color: #fff;
+  }
+
+  .option-btn.reveal-correct {
+    background: rgba(16,185,129,0.06);
+    border-color: rgba(16,185,129,0.4);
+  }
+
+  .option-btn.reveal-correct .option-letter {
+    background: rgba(16,185,129,0.3);
+    color: var(--correct);
+  }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.correct-fb { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+  .feedback.wrong-fb { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+
+  /* ───── SHORT ANSWER CARDS ───── */
+  .sa-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.8rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sa-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: rgba(124,58,237,0.5);
+  }
+
+  .sa-meta {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .sa-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .sa-marks {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fcd34d;
+    background: rgba(245,158,11,0.15);
+    border: 1px solid rgba(245,158,11,0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .sa-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #c4b5fd;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .sa-q {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+  }
+
+  .sa-answer-area {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    color: var(--text);
+    font-family: 'Lora', serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .sa-answer-area:focus { border-color: var(--accent2); }
+
+  .sa-actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 0.9rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-reveal {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.4);
+    color: #c4b5fd;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reveal:hover {
+    background: rgba(124,58,237,0.3);
+    border-color: var(--accent2);
+    color: #fff;
+  }
+
+  .btn-self-correct, .btn-self-wrong {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+  }
+
+  .btn-self-correct {
+    background: rgba(16,185,129,0.1);
+    border-color: rgba(16,185,129,0.4);
+    color: #6ee7b7;
+  }
+
+  .btn-self-correct:hover { background: rgba(16,185,129,0.25); }
+
+  .btn-self-wrong {
+    background: rgba(239,68,68,0.1);
+    border-color: rgba(239,68,68,0.4);
+    color: #fca5a5;
+  }
+
+  .btn-self-wrong:hover { background: rgba(239,68,68,0.2); }
+
+  .sa-model-answer {
+    margin-top: 1rem;
+    padding: 1rem 1.2rem;
+    background: rgba(124,58,237,0.06);
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 8px;
+    display: none;
+  }
+
+  .sa-model-answer.show { display: block; }
+
+  .sa-model-answer h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c4b5fd;
+    margin-bottom: 0.7rem;
+  }
+
+  .sa-model-answer p, .sa-model-answer li {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #d1d5db;
+  }
+
+  .sa-model-answer ul {
+    padding-left: 1.2rem;
+  }
+
+  .sa-model-answer li { margin-bottom: 0.3rem; }
+
+  .sa-result-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    margin-top: 0.8rem;
+  }
+
+  .badge-correct { background: rgba(16,185,129,0.15); color: var(--correct); border: 1px solid rgba(16,185,129,0.3); }
+  .badge-wrong { background: rgba(239,68,68,0.1); color: var(--wrong); border: 1px solid rgba(239,68,68,0.3); }
+
+  /* ───── RESULTS PANEL ───── */
+  .results-panel {
+    background: linear-gradient(135deg, rgba(0,229,255,0.05), rgba(124,58,237,0.05));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .results-panel h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+
+  .big-score {
+    font-family: 'Syne', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin: 1rem 0;
+  }
+
+  .grade-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ───── FOOTER ───── */
+  footer {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* ───── RESPONSIVE ───── */
+  @media (max-width: 600px) {
+    .tab-btn { font-size: 0.7rem; padding: 0.75rem 0.5rem; }
+    .stats-bar { gap: 1.5rem; }
+    .score-dashboard { flex-direction: column; }
+  }
+
+  /* ───── ANIMATIONS ───── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .mcq-card, .sa-card {
+    animation: fadeIn 0.4s ease both;
+  }
+
+  .mcq-card:nth-child(n) { animation-delay: calc(n * 0.02s); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">Practice Quiz Bank</div>
+  <h1>Analysis of <span>Therapeutic Drug Substances</span></h1>
+  <p>Pharmaceutical Analysis · Antimicrobial Susceptibility Testing · Dosage Development</p>
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">50</span><span class="stat-label">MCQs</span></div>
+    <div class="stat"><span class="stat-num">20</span><span class="stat-label">Short Answer</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">Marks Each (SA)</span></div>
+    <div class="stat"><span class="stat-num">3</span><span class="stat-label">Topic Units</span></div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('mcq',this)">MCQs (50)</button>
+  <button class="tab-btn" onclick="switchTab('sa',this)">Short Answer (20)</button>
+</nav>
+
+<main>
+  <!-- ═══════════════════ MCQ PANEL ═══════════════════ -->
+  <div class="tab-panel active" id="tab-mcq">
+
+    <div class="section-header">
+      <div class="section-icon icon-mcq">🧪</div>
+      <div class="section-info">
+        <h2>Multiple Choice Questions</h2>
+        <p>Select one answer — instant feedback with explanations</p>
+      </div>
+    </div>
+
+    <div class="score-dashboard">
+      <div>
+        <div class="score-display">
+          <span class="score-num" id="mcq-score">0</span>
+          <span class="score-total">/ <span id="mcq-answered">0</span> answered</span>
+        </div>
+        <div class="grade-label" id="mcq-percent">0% correct so far</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span id="mcq-prog-label">0 / 50</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="mcq-bar"></div></div>
+      </div>
+      <button class="btn-reset" onclick="resetMCQ()">↺ Reset All</button>
+    </div>
+
+    <div id="mcq-container"></div>
+  </div>
+
+  <!-- ═══════════════════ SHORT ANSWER PANEL ═══════════════════ -->
+  <div class="tab-panel" id="tab-sa">
+
+    <div class="section-header">
+      <div class="section-icon icon-sa">✍️</div>
+      <div class="section-info">
+        <h2>Short Answer Questions</h2>
+        <p>5 marks each · Write your answer · Reveal the model answer · Self-assess</p>
+      </div>
+    </div>
+
+    <div class="score-dashboard">
+      <div>
+        <div class="score-display">
+          <span class="score-num" id="sa-score">0</span>
+          <span class="score-total">/ <span id="sa-answered">0</span> marked</span>
+        </div>
+        <div class="grade-label" id="sa-marks-label">Potential marks: 100</div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Marked</span>
+          <span id="sa-prog-label">0 / 20</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="sa-bar"></div></div>
+      </div>
+      <button class="btn-reset" onclick="resetSA()">↺ Reset All</button>
+    </div>
+
+    <div id="sa-container"></div>
+  </div>
+</main>
+
+<footer>
+  <p>Analysis of Therapeutic Drug Substances · Quiz Bank &nbsp;|&nbsp; <a href="#">← Back to Study Notes</a></p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA — MCQs
+// ═══════════════════════════════════════════════
+const mcqs = [
+  // UNIT 1: Analytical Techniques
+  {
+    q: "Which of the following best describes the principle of chromatography?",
+    opts: ["Separation based on electrical charge","Separation based on differential affinity for stationary and mobile phases","Separation based on molecular weight alone","Separation based on solubility in water only"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "Chromatography separates compounds because they have different affinities for the stationary and mobile phases — components that prefer the stationary phase move slowly, while those preferring the mobile phase move faster."
+  },
+  {
+    q: "In HPLC, what does the 'pump' primarily do?",
+    opts: ["Detects compounds eluting from the column","Mixes the stationary phase","Forces the mobile phase through the column at high pressure","Injects the sample into the system"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "The pump in HPLC forces the liquid mobile phase through the column at high pressure, enabling rapid and efficient separation."
+  },
+  {
+    q: "Which detector in HPLC allows simultaneous detection at multiple wavelengths and peak purity assessment?",
+    opts: ["Refractive index detector","UV detector","Electrochemical detector","Photodiode Array (PDA) detector"],
+    ans: 3, topic: "Analytical Techniques",
+    explain: "The PDA detector captures the full UV-Vis spectrum simultaneously, allowing peak purity checks and multi-wavelength detection in a single run."
+  },
+  {
+    q: "Gas Chromatography (GC) is most suitable for which type of compounds?",
+    opts: ["High molecular weight proteins","Volatile and thermally stable organic compounds","Ionized inorganic salts","Large polysaccharides"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "GC requires compounds to vaporize in a carrier gas stream — it is therefore best suited to volatile, thermally stable organic molecules."
+  },
+  {
+    q: "Derivatization in GC is performed to:",
+    opts: ["Increase detector sensitivity only","Convert non-volatile drugs into volatile derivatives","Replace the carrier gas","Adjust the pH of the mobile phase"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "Many drug substances are non-volatile. Derivatization chemically modifies them to increase volatility so they can be analysed by GC."
+  },
+  {
+    q: "Which spectroscopic technique produces a unique spectral 'fingerprint' of a sample without requiring sample preparation?",
+    opts: ["Fluorimetry","Near Infrared Spectroscopy (NIRS)","Potentiometry","Titrimetry"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "NIRS is non-destructive and requires no sample preparation. Each material produces a unique NIR absorption fingerprint, making it ideal for raw material identification and QC."
+  },
+  {
+    q: "In fluorimetry, the emission wavelength is always:",
+    opts: ["Equal to the excitation wavelength","Shorter than the excitation wavelength","Longer than the excitation wavelength","Independent of the excitation wavelength"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "When a molecule emits fluorescence, some energy is lost through internal processes, so the emitted photon has less energy — meaning a longer wavelength — than the absorbed photon."
+  },
+  {
+    q: "Which analytical technique is based on the interaction of nuclei with an external magnetic field and radiofrequency radiation?",
+    opts: ["Titrimetry","Capillary Electrophoresis","Nuclear Magnetic Resonance (NMR)","Fluorimetry"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "NMR exploits the spin property of certain nuclei. In a magnetic field, these nuclei absorb radiofrequency energy and the resulting signal reveals molecular structure."
+  },
+  {
+    q: "Flow Injection Analysis (FIA) is primarily classified as a(n):",
+    opts: ["Separation technique","Electrophoretic technique","Automation and throughput technique","Spectroscopic technique"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "FIA is not a separation technique — it is an automation tool that injects a sample into a flowing carrier stream to achieve high sample throughput."
+  },
+  {
+    q: "In capillary electrophoresis (CE), separation is achieved by:",
+    opts: ["Differences in boiling point","Migration of charged molecules under an electric field in a capillary","Adsorption onto a stationary phase","Precipitation with reagents"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "CE applies a high voltage across a narrow capillary filled with buffer. Charged analytes migrate at different speeds depending on their charge-to-size ratio."
+  },
+  {
+    q: "An example of a hyphenated technique used extensively in drug metabolism studies is:",
+    opts: ["TLC–HPTLC","LC-MS/MS","CE–FIA","NIRS–NMR"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "LC-MS/MS (liquid chromatography–tandem mass spectrometry) combines chromatographic separation with highly sensitive and specific mass detection, making it the gold standard for drug metabolism and pharmacokinetic studies."
+  },
+  {
+    q: "The Rf value in TLC represents:",
+    opts: ["The retention factor of the mobile phase","Distance travelled by compound / distance travelled by solvent front","The refractive index of the compound","Time taken to elute from the column"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "Rf (retardation factor) = distance migrated by the compound ÷ distance migrated by the solvent front. It is a characteristic value used for compound identification."
+  },
+  {
+    q: "Which detector is most appropriate for sugars and carbohydrates in HPLC?",
+    opts: ["UV detector","Electrochemical detector","Refractive index detector","Fluorescence detector"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "Sugars, alcohols, and carbohydrates lack UV-absorbing chromophores. The refractive index (RI) detector responds to any compound that changes the refractive index of the mobile phase and is therefore ideal."
+  },
+  {
+    q: "HPTLC differs from TLC primarily in that HPTLC:",
+    opts: ["Uses a gaseous mobile phase","Allows simultaneous analysis of multiple samples with better reproducibility","Requires derivatization of all samples","Cannot detect impurities"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "HPTLC uses smaller, more uniform sorbent particles, enabling faster development, better resolution, and simultaneous multi-sample analysis — key advantages over conventional TLC."
+  },
+  {
+    q: "In pharmaceutical analysis, chiral drugs must be distinguished because:",
+    opts: ["Both enantiomers always have identical pharmacological effects","One enantiomer may cause toxicity or be inactive","Racemates are illegal under all regulations","Chiral drugs cannot be synthesized in pure form"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "ICH guidelines require treatment of the unwanted enantiomer as an impurity. One enantiomer can have therapeutic benefits while the other can be toxic or pharmacologically inert."
+  },
+
+  // UNIT 2: AST — Disk Diffusion
+  {
+    q: "The Kirby-Bauer disk diffusion method relies on:",
+    opts: ["Dilution of antibiotic in broth","Diffusion of antibiotic from an impregnated disk into agar inoculated with the test organism","Electrophoresis of antibiotic molecules","Spectrophotometric measurement of bacterial growth"],
+    ans: 1, topic: "AST",
+    explain: "In the Kirby-Bauer method, antibiotic-impregnated disks are placed on inoculated agar. The antibiotic diffuses outward, creating a concentration gradient that inhibits sensitive organisms."
+  },
+  {
+    q: "The recommended medium for non-fastidious organisms in the Kirby-Bauer disk diffusion method is:",
+    opts: ["Blood agar","Chocolate agar","Mueller-Hinton Agar (MHA)","Haemophilus Test Medium (HTM)"],
+    ans: 2, topic: "AST",
+    explain: "CLSI recommends Mueller-Hinton Agar for non-fastidious organisms. It has low thymidine content, acceptable reproducibility, and supports satisfactory antibiotic diffusion."
+  },
+  {
+    q: "Why is MHA preferred for AST? It has:",
+    opts: ["High thymidine content to support bacterial growth","Low thymidine content — excess thymidine antagonizes sulfonamides and SXT","Added sheep blood for fastidious organisms","A built-in pH indicator"],
+    ans: 1, topic: "AST",
+    explain: "High thymidine levels would antagonize sulfonamides and trimethoprim-sulfamethoxazole (SXT), giving falsely large zones. MHA's low thymidine content prevents this."
+  },
+  {
+    q: "The McFarland 0.5 standard corresponds approximately to:",
+    opts: ["2 × 10⁵ CFU/ml","2 × 10⁶ CFU/ml","2 × 10⁸ CFU/ml","2 × 10¹⁰ CFU/ml"],
+    ans: 2, topic: "AST",
+    explain: "The 0.5 McFarland standard (prepared with BaSO₄) represents approximately 1.5–2 × 10⁸ CFU/ml — the standard inoculum density for disk diffusion testing."
+  },
+  {
+    q: "For Gram-positive cocci, which McFarland standard is used for inoculum preparation?",
+    opts: ["0.5 McFarland","1 McFarland","2 McFarland","0.1 McFarland"],
+    ans: 1, topic: "AST",
+    explain: "The 0.5 McFarland standard is used for Gram-negative bacilli and fast-growing organisms; 1 McFarland is used for Gram-positive cocci."
+  },
+  {
+    q: "Plates must be inoculated within how long after adjusting turbidity?",
+    opts: ["5 minutes","15 minutes","30 minutes","60 minutes"],
+    ans: 1, topic: "AST",
+    explain: "CLSI specifies that inoculation should occur within 15 minutes of adjusting to the McFarland standard to prevent changes in inoculum density."
+  },
+  {
+    q: "What minimum distance should be maintained between the edges of two antibiotic disks on the same plate?",
+    opts: ["10 mm","15 mm","24 mm","30 mm"],
+    ans: 2, topic: "AST",
+    explain: "Disks must be at least 24 mm apart (edge to edge) to prevent zones of inhibition from overlapping, which would make measurement impossible."
+  },
+  {
+    q: "Which medium requires 5% CO₂ atmosphere for incubation in AST?",
+    opts: ["Plain MHA","Mueller-Hinton Blood Agar (MHBA) and HTM","MacConkey agar","GC agar"],
+    ans: 1, topic: "AST",
+    explain: "MHBA (for streptococci) and HTM (for Haemophilus) require a 5% CO₂ atmosphere. Plain MHA does NOT require CO₂ — this is a classic exam trap."
+  },
+  {
+    q: "In the Stokes method, a test organism is classified as Resistant when its zone is:",
+    opts: ["Equal to the control strain","2–3 mm smaller than the control strain","More than 2 mm smaller than the control strain","Larger than the control strain"],
+    ans: 2, topic: "AST",
+    explain: "In Stokes method: Susceptible = ≥ control zone; Intermediate = 2–3 mm smaller; Resistant = more than 2 mm smaller than the control strain's zone."
+  },
+  {
+    q: "The mecA gene in MRSA encodes:",
+    opts: ["A beta-lactamase enzyme","Penicillin Binding Protein 2a (PBP2a)","Vancomycin resistance","ESBL enzymes"],
+    ans: 1, topic: "AST",
+    explain: "mecA encodes PBP2a, an altered penicillin-binding protein whose active site does not bind beta-lactam antibiotics, conferring resistance to all beta-lactams including methicillin."
+  },
+  {
+    q: "Why is cefoxitin preferred over oxacillin for MRSA detection by disk diffusion?",
+    opts: ["Cefoxitin is cheaper","Cefoxitin better induces PBP2a expression, is more stable, produces clearer zones, and requires shorter incubation","Oxacillin is not available commercially","Cefoxitin has broader spectrum activity"],
+    ans: 1, topic: "AST",
+    explain: "Cefoxitin is a more potent inducer of PBP2a, it is stable (unlike oxacillin which degrades), produces easier-to-read zones, and requires only 16–18 h versus 24 h for oxacillin."
+  },
+  {
+    q: "The D-zone test detects:",
+    opts: ["MRSA","Inducible clindamycin resistance in staphylococci","VRE","ESBL-producing organisms"],
+    ans: 1, topic: "AST",
+    explain: "The D-zone test (erythromycin and clindamycin disks placed 15–26 mm apart) detects inducible clindamycin resistance mediated by the erm gene in staphylococci."
+  },
+  {
+    q: "In the D-zone test, a positive result (inducible clindamycin resistance) is indicated by:",
+    opts: ["Complete absence of any zone around clindamycin","Flattening of the clindamycin zone on the side facing erythromycin","An enlarged zone around clindamycin","No zone around erythromycin"],
+    ans: 1, topic: "AST",
+    explain: "Inducible resistance is detected as a characteristic D-shaped flattening of the clindamycin inhibition zone on the side facing the erythromycin disk — the erythromycin induces resistance in that area."
+  },
+  {
+    q: "The correct edge-to-edge distance between erythromycin and clindamycin disks for the D-zone test is:",
+    opts: ["5–10 mm","10–14 mm","15–26 mm","30–40 mm"],
+    ans: 2, topic: "AST",
+    explain: "CLSI specifies 15–26 mm edge-to-edge separation between the two disks for the D-zone test. Too close or too far apart will give false results."
+  },
+  {
+    q: "The ESBL confirmatory test using CLSI criteria requires a ≥ how many two-fold decrease in MIC when clavulanate is added?",
+    opts: ["1 two-fold decrease","2 two-fold decreases","3 two-fold decreases","5 two-fold decreases"],
+    ans: 2, topic: "AST",
+    explain: "CLSI requires a ≥ 3 two-fold (i.e. ≥ 8-fold) decrease in MIC of cefotaxime or ceftazidime when combined with clavulanate (4 µg/ml) to confirm ESBL production."
+  },
+  {
+    q: "Which of the following is susceptible to monobactams (aztreonam) while KPC is resistant?",
+    opts: ["KPC (Klebsiella pneumoniae Carbapenemase)","MBL (Metallo-β-Lactamase)","ESBL","AmpC"],
+    ans: 1, topic: "AST",
+    explain: "MBLs (metallo-beta-lactamases) contain zinc in their active site and are susceptible to aztreonam (monobactam). KPCs contain serine and are resistant to all beta-lactams including aztreonam."
+  },
+  {
+    q: "Excess magnesium and calcium ions in culture media will:",
+    opts: ["Increase zone sizes for aminoglycosides","Decrease zone sizes for aminoglycosides","Have no effect on any antibiotic zone","Increase zone sizes for carbapenems"],
+    ans: 1, topic: "AST",
+    explain: "Excess divalent cations (Mg²⁺, Ca²⁺) chelate aminoglycosides and reduce their activity, resulting in smaller zones of inhibition."
+  },
+  {
+    q: "A light inoculum in disk diffusion will cause:",
+    opts: ["Smaller zones of inhibition","Larger zones of inhibition","No change in zone size","Irregular zones only"],
+    ans: 1, topic: "AST",
+    explain: "A light inoculum means fewer organisms to inhibit, so the antibiotic can suppress growth further from the disk — producing artificially large zones."
+  },
+  {
+    q: "Alkaline pH in Mueller-Hinton Agar would be expected to:",
+    opts: ["Increase activity of aminoglycosides and quinolones; decrease activity of tetracyclines","Decrease activity of aminoglycosides; increase activity of tetracyclines","Have no effect on zone sizes","Increase the activity of all antibiotics equally"],
+    ans: 0, topic: "AST",
+    explain: "Alkaline pH enhances aminoglycosides, quinolones, and macrolides (larger zones) but reduces tetracycline activity (smaller zones)."
+  },
+  {
+    q: "The drug of choice for serious MRSA infections (injectable) is:",
+    opts: ["Ampicillin","Ciprofloxacin","Vancomycin","Cefotaxime"],
+    ans: 2, topic: "AST",
+    explain: "Vancomycin (and teicoplanin) are the injectable drugs of choice for MRSA. Oral options include linezolid and rifampicin."
+  },
+  {
+    q: "Ampicillin is intrinsically resistant to which organism?",
+    opts: ["Staphylococcus aureus","E. coli","Klebsiella spp.","Streptococcus pneumoniae"],
+    ans: 2, topic: "AST",
+    explain: "Klebsiella species are intrinsically resistant to ampicillin (and amoxicillin) due to chromosomally encoded beta-lactamase. This must always be reported as Resistant."
+  },
+  {
+    q: "VRE resistance mechanism involves alteration of:",
+    opts: ["The outer membrane porins","The terminal D-Ala-D-Ala to D-Ala-D-Lactate","The ribosomal binding site","ESBL production"],
+    ans: 1, topic: "AST",
+    explain: "VRE resistance occurs when the normal D-Ala-D-Ala dipeptide terminus of peptidoglycan precursors is changed to D-Ala-D-Lactate, reducing vancomycin binding affinity by ~1000-fold."
+  },
+  {
+    q: "ESBL-producing organisms are detected by confirmation with:",
+    opts: ["Addition of EDTA","Addition of clavulanate to the beta-lactam disk","Adding NaCl to media","Modified Hodge test only"],
+    ans: 1, topic: "AST",
+    explain: "Clavulanate inhibits ESBLs. In the combination disk test, a ≥5 mm increase in zone diameter (DD) or ≥3 two-fold MIC decrease with clavulanate confirms ESBL production."
+  },
+  {
+    q: "Which ATCC strain is used as quality control for ESBL-positive testing?",
+    opts: ["ATCC 25923 S. aureus","ATCC 25922 E. coli","ATCC 700603 K. pneumoniae","ATCC 27853 P. aeruginosa"],
+    ans: 2, topic: "AST",
+    explain: "ATCC 700603 Klebsiella pneumoniae is the ESBL-positive QC strain. It is used to validate that ESBL detection methods are working correctly."
+  },
+  {
+    q: "Proteus swarming within a zone of inhibition should be:",
+    opts: ["Reported as susceptible","Reported as resistant","Ignored when measuring the zone","Tested again with a different medium"],
+    ans: 2, topic: "AST",
+    explain: "Proteus spp. commonly swarm into zones. CLSI guidance states this swarming should be ignored and the clear zone of inhibition measured."
+  },
+
+  // UNIT 3: Dosage Development
+  {
+    q: "Which step comes immediately after API characterization in the drug development pipeline?",
+    opts: ["Regulatory Affairs","Preformulation studies","Manufacturing","Out-licensing"],
+    ans: 1, topic: "Dosage Development",
+    explain: "The correct 8-step pipeline is: API → Preformulation → R&D Formulation → Bioequivalence Studies → Regulatory Affairs → Out-licensing → Manufacturing → Supply."
+  },
+  {
+    q: "Preformulation studies investigate which of the following? (Select the best answer)",
+    opts: ["Clinical trial design only","Solubility, pH/pKa, partition coefficient, solid-state properties, and powder flow","Market demand analysis","Packaging and labelling"],
+    ans: 1, topic: "Dosage Development",
+    explain: "The 5 key preformulation parameters are: solubility, pH/pKa, partition coefficient (lipophilicity), solid-state properties (polymorphism), and powder flow. Each informs formulation decisions."
+  },
+  {
+    q: "An o/w (oil-in-water) cream compared to a w/o cream is:",
+    opts: ["More greasy and better for lipophilic drugs","Less greasy, water-washable, and better suited for hydrophilic drugs","Identical in drug release properties","Not suitable for topical use"],
+    ans: 1, topic: "Dosage Development",
+    explain: "o/w creams are less greasy and water-washable (patient-preferred). w/o creams are better for lipophilic drugs and provide better moisturizing due to the oil outer phase."
+  },
+  {
+    q: "Bioequivalence (BE) requires that two formulations have:",
+    opts: ["The same active ingredient only","The same rate AND same extent of absorption within acceptable limits","The same physical appearance","The same excipients"],
+    ans: 1, topic: "Dosage Development",
+    explain: "BE requires both conditions to be met: same rate (Cmax, Tmax) AND same extent (AUC) of absorption. Both parameters must fall within the 80–125% acceptance range."
+  },
+  {
+    q: "Suppositories are designed to be:",
+    opts: ["Liquid at room temperature and solid at body temperature","Solid at room temperature and melt at body temperature (37°C)","Dissolved in water before use","Swallowed whole"],
+    ans: 1, topic: "Dosage Development",
+    explain: "Suppositories must be solid for handling and storage at room temperature but melt or dissolve at body temperature (37°C) to release the drug at the rectal/vaginal mucosa."
+  },
+  {
+    q: "Elixirs differ from syrups in that elixirs are:",
+    opts: ["Purely aqueous solutions","Hydroalcoholic solutions, accommodating less water-soluble drugs","Suspensions of insoluble particles","Emulsified dosage forms"],
+    ans: 1, topic: "Dosage Development",
+    explain: "Syrups are aqueous solutions of sugar. Elixirs are hydroalcoholic (contain ethanol), which allows less water-soluble drugs to dissolve — they are clear, sweetened solutions."
+  },
+  {
+    q: "Suspensions are NOT recommended for which type of drugs?",
+    opts: ["Antibiotics","Low-potency vitamins","High-potency drugs (narrow therapeutic index)","Antacids"],
+    ans: 2, topic: "Dosage Development",
+    explain: "Suspensions carry a dose-uniformity risk — particles may settle unevenly. This makes them unsuitable for high-potency (narrow therapeutic index) drugs where accurate dosing is critical."
+  },
+  {
+    q: "Why should coated tablets NOT be divided or crushed?",
+    opts: ["The coating improves appearance only","Dividing destroys taste masking, stability protection, or controlled-release mechanisms built into the coating","They are too hard to break","Regulatory guidelines prohibit it universally"],
+    ans: 1, topic: "Dosage Development",
+    explain: "Tablet coatings serve critical functions: taste masking, protection from gastric acid (enteric coating), or controlling drug release. Crushing or dividing destroys these functions."
+  },
+  {
+    q: "In BE studies, in vitro dissolution data can substitute for in vivo studies only when:",
+    opts: ["The drug is available as a generic","An established in vitro–in vivo correlation (IVIVC) has been demonstrated","The drug has a wide therapeutic index","The formulation is a liquid"],
+    ans: 1, topic: "Dosage Development",
+    explain: "In vitro data can only replace in vivo BE studies when a validated IVIVC has been established, demonstrating that dissolution rate reliably predicts in vivo absorption."
+  },
+  {
+    q: "Polymorphism in preformulation is important because different polymorphs of the same drug can have:",
+    opts: ["Different colour but identical pharmacokinetics","Different solubility, dissolution rate, stability, and bioavailability","Identical chemical formula but no practical differences","Different molecular weights"],
+    ans: 1, topic: "Dosage Development",
+    explain: "Polymorphs are crystalline forms with the same chemical composition but different crystal packing. They can have dramatically different solubility and dissolution rates — directly impacting bioavailability."
+  },
+  // Extra questions to reach 50
+  {
+    q: "Which of the following is a correct ATCC control strain for checking thymidine level in MHA?",
+    opts: ["ATCC 25923 S. aureus","ATCC 29212 E. faecalis","ATCC 27853 P. aeruginosa","ATCC 35218 E. coli"],
+    ans: 1, topic: "AST",
+    explain: "ATCC 29212 Enterococcus faecalis is sensitive to thymidine inhibition of SXT — it is used to verify that MHA thymidine levels are appropriately low."
+  },
+  {
+    q: "Which analytical method determines analyte concentration from its reaction rate?",
+    opts: ["Titrimetry","Flow injection analysis","Kinetic methods","NIRS"],
+    ans: 2, topic: "Analytical Techniques",
+    explain: "Kinetic methods measure the rate of a chemical reaction. Using integrated or differential rate laws, analyte concentration is calculated from how fast the reaction proceeds."
+  },
+  {
+    q: "Sequential Injection Analysis (SIA) improves upon FIA primarily by:",
+    opts: ["Using a gaseous carrier stream","Offering programmable bidirectional flow and reduced reagent consumption","Requiring no detector","Being used only for solid samples"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "SIA uses a bidirectional, programmable pump to handle reagents and samples sequentially, significantly reducing reagent/sample consumption and offering greater flexibility than FIA."
+  },
+  {
+    q: "In HPLC, the analyte that has a higher affinity for the stationary phase will:",
+    opts: ["Elute first","Elute last","Elute at the same time as all other compounds","Not be detected"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "A stronger affinity for the stationary phase means the compound spends more time retained in the column, so it migrates slowly and elutes last."
+  },
+  {
+    q: "During drug discovery, preclinical studies include:",
+    opts: ["Phase III clinical trials","In vitro studies and animal toxicology studies","Post-marketing surveillance","Regulatory submissions"],
+    ans: 1, topic: "Dosage Development",
+    explain: "Preclinical studies comprise in vitro experiments (outside living organisms) and animal studies assessing pharmacokinetics, toxicity, and carcinogenicity before human trials begin."
+  },
+  {
+    q: "Excess zinc in Mueller-Hinton Agar would cause:",
+    opts: ["Larger zones of inhibition for carbapenems","Smaller zones of inhibition for carbapenems","Larger zones for aminoglycosides","No effect on carbapenem activity"],
+    ans: 1, topic: "AST",
+    explain: "Zinc ions chelate carbapenems (which have a beta-lactam ring sensitive to metal chelation), reducing their efficacy and producing falsely smaller zones of inhibition."
+  },
+  {
+    q: "High-level aminoglycoside resistance (HLAR) in Enterococci is detected by disk diffusion using gentamicin at:",
+    opts: ["10 µg","30 µg","120 µg","500 µg"],
+    ans: 2, topic: "AST",
+    explain: "HLAR detection uses a high-content gentamicin disk (120 µg) for disk diffusion, or gentamicin 500 µg/ml for MIC testing — concentrations far above normal breakpoints."
+  },
+  {
+    q: "The partition coefficient in preformulation studies measures:",
+    opts: ["The drug's melting point","The drug's distribution between an aqueous and oil phase (lipophilicity)","The rate of drug dissolution","The drug's electrical charge"],
+    ans: 1, topic: "Dosage Development",
+    explain: "The partition coefficient (logP) measures how a drug distributes between an organic (oil) and aqueous phase. It predicts membrane permeability, absorption, and formulation requirements."
+  },
+  {
+    q: "Which of the following organisms is tested with GC Agar in AST?",
+    opts: ["Haemophilus influenzae","Streptococcus pneumoniae","Neisseria gonorrhoeae","Staphylococcus aureus"],
+    ans: 2, topic: "AST",
+    explain: "GC agar (gonococcal agar base) is the recommended medium for Neisseria gonorrhoeae susceptibility testing due to its specific nutritional requirements."
+  },
+  {
+    q: "The purpose of the pharmaceutical analysis step 'drug characterization' is to:",
+    opts: ["Market the drug to physicians","Determine molecular structure, functional groups, purity, and stability","Recruit patients for clinical trials","Establish pricing for the product"],
+    ans: 1, topic: "Analytical Techniques",
+    explain: "Drug characterization uses spectroscopic and chromatographic techniques to establish identity (structure), purity (impurities), and stability (degradation products) of the API."
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  DATA — Short Answer Questions
+// ═══════════════════════════════════════════════
+const saqs = [
+  {
+    q: "Describe the principle of the Kirby-Bauer disk diffusion method and explain how zones of inhibition are formed.",
+    topic: "AST", marks: 5,
+    answer: `<p>The Kirby-Bauer disk diffusion method is based on the diffusion of an antibiotic from an impregnated paper disk into Mueller-Hinton agar that has been uniformly inoculated with the test organism.</p><ul>
+<li>As the antibiotic diffuses outward, a <strong>concentration gradient</strong> is established — highest near the disk, decreasing with distance.</li>
+<li>Where the antibiotic concentration exceeds the minimum inhibitory concentration (MIC) of the organism, bacterial growth is inhibited.</li>
+<li>This creates a clear circular <strong>zone of inhibition</strong> around the disk.</li>
+<li>The diameter of this zone is measured in millimetres and compared with CLSI breakpoints to classify the organism as Susceptible (S), Intermediate (I), or Resistant (R).</li>
+<li>A larger zone indicates greater susceptibility; a smaller or absent zone indicates resistance.</li></ul>`
+  },
+  {
+    q: "Explain why Mueller-Hinton Agar (MHA) is the recommended medium for antimicrobial susceptibility testing. Include at least three of its key properties.",
+    topic: "AST", marks: 5,
+    answer: `<ul>
+<li><strong>Low thymidine content:</strong> Excess thymidine antagonizes sulfonamides and SXT (trimethoprim-sulfamethoxazole), causing falsely large zones. MHA's low thymidine prevents this.</li>
+<li><strong>Batch-to-batch reproducibility:</strong> MHA shows acceptable consistency across production batches, which is essential for reliable and comparable AST results over time.</li>
+<li><strong>Supports antibiotic diffusion:</strong> The agar's physical properties (pH 7.2–7.4, 4 mm depth) allow antibiotics to diffuse uniformly from disks.</li>
+<li><strong>Non-inhibitory to most organisms:</strong> MHA does not contain inhibitors that would affect the growth of non-fastidious organisms.</li>
+<li><strong>Satisfactory moisture content</strong> ensures the plate surface does not dry out during incubation, preventing inaccurate zone measurements.</li></ul>`
+  },
+  {
+    q: "Describe the D-zone test: its purpose, procedure, and interpretation of positive and negative results.",
+    topic: "AST", marks: 5,
+    answer: `<p><strong>Purpose:</strong> To detect inducible clindamycin resistance in staphylococci caused by the <em>erm</em> gene, which encodes methylation of 23S rRNA.</p>
+<p><strong>Procedure:</strong></p><ul>
+<li>An erythromycin disk and a clindamycin disk are placed <strong>15–26 mm apart (edge to edge)</strong> on Mueller-Hinton Agar inoculated with the organism.</li>
+<li>The plate is incubated at 37°C for 16–18 hours.</li></ul>
+<p><strong>Interpretation:</strong></p><ul>
+<li><strong>Positive D-zone (D-zone positive):</strong> Flattening of the clindamycin zone on the side facing the erythromycin disk (D-shape). This indicates inducible clindamycin resistance — the organism should be reported as Clindamycin Resistant.</li>
+<li><strong>Negative D-zone:</strong> No flattening; circular zone around clindamycin. The organism is Clindamycin Susceptible.</li>
+<li>If both erythromycin AND clindamycin show resistance (no zones), the organism is constitutively resistant — also reported as Clindamycin Resistant.</li></ul>`
+  },
+  {
+    q: "Explain the mechanism of MRSA resistance. How does the mecA gene confer resistance to all beta-lactam antibiotics?",
+    topic: "AST", marks: 5,
+    answer: `<ul>
+<li>MRSA (Methicillin-Resistant Staphylococcus aureus) carries the <strong>mecA gene</strong> on a mobile genetic element called SCCmec.</li>
+<li>mecA encodes <strong>Penicillin Binding Protein 2a (PBP2a)</strong>, an altered penicillin-binding protein.</li>
+<li>Normal PBPs catalyse the cross-linking of peptidoglycan and are the targets of beta-lactam antibiotics. Beta-lactams bind covalently to PBPs and inhibit cell wall synthesis.</li>
+<li>PBP2a has a very <strong>low affinity for all beta-lactam antibiotics</strong> — they cannot bind its active site effectively.</li>
+<li>PBP2a continues to perform cell wall synthesis even in the presence of beta-lactams, allowing the organism to survive.</li>
+<li>As a result, acquisition of mecA confers resistance to <strong>all beta-lactams</strong>: penicillins, cephalosporins, carbapenems, and monobactams.</li>
+<li>Drug of choice for MRSA: <strong>vancomycin</strong> (injectable) or linezolid (oral).</li></ul>`
+  },
+  {
+    q: "List and explain five factors that affect zone sizes in disk diffusion testing.",
+    topic: "AST", marks: 5,
+    answer: `<ul>
+<li><strong>Inoculum density:</strong> Light inoculum → larger zones; heavy inoculum → smaller zones. Correct density is critical for reproducibility.</li>
+<li><strong>Agar depth:</strong> Thin agar (< 4 mm) → larger zones (less medium to diffuse through); thick agar → smaller zones.</li>
+<li><strong>pH of medium:</strong> Acidic pH reduces aminoglycoside and quinolone activity (smaller zones) but increases tetracycline activity. Alkaline pH has opposite effects.</li>
+<li><strong>Cation concentration:</strong> Excess Mg²⁺/Ca²⁺ reduces aminoglycoside zones. Excess Zn²⁺ reduces carbapenem zones. Low cation levels produce falsely large zones.</li>
+<li><strong>Thymidine content:</strong> Excess thymidine in media antagonizes SXT, producing falsely large zones (organism appears susceptible when it may not be).</li></ul>`
+  },
+  {
+    q: "Compare and contrast ESBL, AmpC, and Carbapenemase-producing organisms in terms of: (a) the enzymes produced, (b) organisms typically affected, and (c) the drug of choice.",
+    topic: "AST", marks: 5,
+    answer: `<p><strong>ESBL (Extended-Spectrum Beta-Lactamase):</strong></p><ul>
+<li>Plasmid-mediated enzymes (TEM, SHV, CTX-M type) hydrolysing extended-spectrum cephalosporins and aztreonam.</li>
+<li>Common in E. coli, Klebsiella pneumoniae, Proteus mirabilis.</li>
+<li>Drug of choice: <strong>Carbapenems</strong> (imipenem, meropenem) for serious infections.</li></ul>
+<p><strong>AmpC Beta-Lactamases:</strong></p><ul>
+<li>Cephalosporinases resistant to clavulanate inhibition; can be chromosomal (Enterobacter, Serratia, Citrobacter) or plasmid-mediated (E. coli, Klebsiella).</li>
+<li>Drug of choice: <strong>Carbapenems</strong>; cefepime may be used in lower-level producers.</li></ul>
+<p><strong>Carbapenemases (KPC / MBL):</strong></p><ul>
+<li>KPC (serine-based) and MBL (zinc-based) hydrolyse carbapenems. MBLs are susceptible to aztreonam; KPCs are not.</li>
+<li>Found in Klebsiella, Pseudomonas, Acinetobacter.</li>
+<li>Drug of choice: <strong>Colistin, polymyxin, tigecycline</strong> — last resort agents.</li></ul>`
+  },
+  {
+    q: "Explain the principle and applications of High Performance Liquid Chromatography (HPLC) in pharmaceutical analysis.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Principle:</strong></p><ul>
+<li>HPLC separates compounds in a mixture based on their <strong>differential distribution</strong> between a liquid mobile phase and a solid stationary phase inside a column.</li>
+<li>A high-pressure pump forces the mobile phase (eluent) through the column. Compounds interact differently with the stationary phase: those with higher affinity are retained longer (elute later); those with lower affinity elute first.</li>
+<li>As compounds elute, a detector records a signal producing a chromatogram of peaks.</li></ul>
+<p><strong>Pharmaceutical Applications:</strong></p><ul>
+<li><strong>Drug assay:</strong> Quantitative determination of API in dosage forms.</li>
+<li><strong>Bioanalysis:</strong> Measuring drug and metabolite concentrations in biological fluids (plasma, urine).</li>
+<li><strong>Pharmacokinetics:</strong> Supporting PK/PD studies.</li>
+<li><strong>Impurity profiling:</strong> Detection and quantification of process impurities and degradation products.</li>
+<li><strong>Quality control:</strong> Ensuring product quality throughout manufacturing.</li></ul>`
+  },
+  {
+    q: "Describe the differences between fluorimetry and phosphorimetry. Why is fluorimetry considered highly sensitive?",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Fluorimetry:</strong></p><ul>
+<li>A molecule absorbs light (excitation) and an electron moves to a higher energy (singlet excited) state.</li>
+<li>The electron rapidly returns to the ground state by emitting a photon of <strong>longer wavelength (lower energy)</strong> than the absorbed light — this is fluorescence.</li>
+<li>Emission is <strong>nearly instantaneous</strong> (nanosecond timescale).</li></ul>
+<p><strong>Phosphorimetry:</strong></p><ul>
+<li>After excitation, the electron undergoes intersystem crossing to a <strong>triplet excited state</strong>, from which it returns to ground state by emission.</li>
+<li>Emission is <strong>delayed</strong> (milliseconds to seconds) — this is phosphorescence.</li></ul>
+<p><strong>Why fluorimetry is highly sensitive:</strong></p><ul>
+<li>The detector measures emitted light against a dark background (at right angles to excitation), compared to absorbance techniques that measure small changes in a large transmitted beam.</li>
+<li>Very small concentrations of fluorescent compounds produce measurable signals, giving <strong>limits of detection orders of magnitude lower</strong> than UV spectrophotometry.</li></ul>`
+  },
+  {
+    q: "What are the 5 key preformulation studies? Explain the importance of each in drug development.",
+    topic: "Dosage Development", marks: 5,
+    answer: `<ul>
+<li><strong>1. Solubility:</strong> Determines aqueous solubility across pH values. Poor solubility leads to low bioavailability and drives formulation choices (e.g., salt selection, solubilization techniques).</li>
+<li><strong>2. pH/pKa:</strong> Establishes the ionization state of the drug at physiological pH values. Ionization affects solubility, permeability, absorption site, and compatibility with excipients.</li>
+<li><strong>3. Partition Coefficient (LogP):</strong> Measures lipophilicity (oil vs. water distribution). A drug must balance aqueous solubility and membrane permeability — logP informs this balance and predicts absorption.</li>
+<li><strong>4. Solid-State Properties (Polymorphism):</strong> Different crystal forms of the same drug can have dramatically different solubility, dissolution rate, and stability — critical for consistent bioavailability and shelf life.</li>
+<li><strong>5. Powder Flow:</strong> Good powder flow is essential for tablet and capsule manufacture. Poor flow causes weight variation and content non-uniformity in solid dosage forms.</li></ul>`
+  },
+  {
+    q: "Explain the concept of bioequivalence (BE). Why must both rate and extent of absorption be equivalent?",
+    topic: "Dosage Development", marks: 5,
+    answer: `<p><strong>Definition:</strong> Bioequivalence is established when two pharmaceutical products (usually a test generic and a reference innovator) produce the same rate and extent of absorption of the active ingredient under similar conditions.</p>
+<p><strong>Key PK parameters evaluated:</strong></p><ul>
+<li><strong>AUC (Area Under the Curve):</strong> Reflects total drug exposure — measures extent of absorption.</li>
+<li><strong>Cmax (Peak plasma concentration):</strong> Reflects peak drug level — linked to rate of absorption and efficacy/toxicity.</li>
+<li><strong>Tmax (Time to peak):</strong> Reflects rate of absorption and onset of action.</li></ul>
+<p><strong>Why both must be equivalent:</strong></p><ul>
+<li>A formulation may achieve the same total exposure (AUC) but release the drug too slowly (low Cmax, high Tmax) — failing to achieve therapeutic plasma levels when needed, or too quickly — causing toxicity.</li>
+<li>Only when both rate and extent are equivalent can clinical interchangeability be assumed.</li>
+<li>Accepted range: 90% CI of test/reference ratio must fall within <strong>80–125%</strong> for both AUC and Cmax.</li></ul>`
+  },
+  {
+    q: "Compare TLC and HPTLC in terms of principle, advantages, and pharmaceutical applications.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Common Principle:</strong> Both TLC and HPTLC separate compounds based on differential migration on an adsorbent-coated plate driven by a liquid mobile phase (solvent). Compounds with higher affinity for the stationary phase migrate slowly; those preferring the mobile phase migrate faster.</p>
+<p><strong>Key Differences:</strong></p><ul>
+<li><strong>Particle size:</strong> HPTLC uses smaller, more uniform sorbent particles, giving better separation efficiency and resolution.</li>
+<li><strong>Speed:</strong> HPTLC develops faster.</li>
+<li><strong>Simultaneous samples:</strong> HPTLC can analyze multiple samples simultaneously with high reproducibility — TLC has lower throughput.</li>
+<li><strong>Quantitation:</strong> HPTLC offers reliable densitometric quantitation; TLC is more qualitative or semi-quantitative.</li></ul>
+<p><strong>Applications:</strong></p><ul>
+<li>TLC: Drug identification, impurity detection, degradation studies, screening unknowns.</li>
+<li>HPTLC: Quantification of ethinyl estradiol, tramadol, alfuzosin; stability studies; pharmaceutical QC.</li></ul>`
+  },
+  {
+    q: "Describe the 8-step drug development pipeline, briefly explaining the significance of each step.",
+    topic: "Dosage Development", marks: 5,
+    answer: `<ul>
+<li><strong>1. API Characterization:</strong> Identify and characterize the active pharmaceutical ingredient — structure, purity, stability.</li>
+<li><strong>2. Preformulation:</strong> Investigate physicochemical properties (solubility, logP, polymorphism, pKa, powder flow) to guide formulation design.</li>
+<li><strong>3. R&D Formulation:</strong> Develop prototype dosage forms, select excipients, optimize drug release, conduct compatibility studies.</li>
+<li><strong>4. Bioequivalence (BE) Studies:</strong> Compare PK profiles of the new formulation against the reference product in humans; demonstrate equivalent rate and extent of absorption.</li>
+<li><strong>5. Regulatory Affairs:</strong> Compile and submit dossiers to regulatory authorities (e.g. FDA, EMA) for approval; respond to queries.</li>
+<li><strong>6. Out-licensing:</strong> Partner with commercial entities for marketing and distribution, or license to manufacturing companies.</li>
+<li><strong>7. Manufacturing:</strong> Scale up production from pilot to commercial scale; validate manufacturing processes.</li>
+<li><strong>8. Supply:</strong> Manage the supply chain to ensure consistent drug availability in the market.</li></ul>`
+  },
+  {
+    q: "Explain the principle of Nuclear Magnetic Resonance (NMR) spectroscopy and its applications in pharmaceutical analysis.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Principle:</strong></p><ul>
+<li>Certain atomic nuclei (¹H, ¹³C) possess a magnetic spin property.</li>
+<li>When placed in a strong external magnetic field, these nuclei align with or against the field, creating two energy levels.</li>
+<li>Applying radiofrequency (RF) radiation at the correct frequency causes nuclei to undergo <strong>resonance</strong> — absorbing energy and flipping to the higher energy state.</li>
+<li>As nuclei relax back to the lower energy state, they emit RF signals recorded as an <strong>NMR spectrum</strong>.</li>
+<li>The exact resonance frequency (chemical shift) depends on the electronic environment of each nucleus, providing detailed structural information.</li></ul>
+<p><strong>Applications:</strong></p><ul>
+<li>Structure elucidation of unknown compounds and drug candidates.</li>
+<li>Characterization of APIs and confirmation of molecular identity.</li>
+<li>Impurity identification and structural determination.</li>
+<li>Quantitative NMR (qNMR) for purity determination without reference standards.</li>
+<li>Study of drug-receptor or drug-protein interactions (ligand binding NMR).</li></ul>`
+  },
+  {
+    q: "What is ESBL? Describe two phenotypic tests used to confirm ESBL production.",
+    topic: "AST", marks: 5,
+    answer: `<p><strong>ESBL (Extended-Spectrum Beta-Lactamase):</strong> A group of plasmid-mediated enzymes (derived from TEM, SHV, CTX-M variants) produced by Gram-negative bacilli. They hydrolyse extended-spectrum cephalosporins (cefotaxime, ceftriaxone, ceftazidime) and aztreonam (monobactam).</p>
+<p><strong>Confirmatory Tests:</strong></p>
+<p><strong>1. CLSI Combination Disk Test (Phenotypic Confirmatory Test):</strong></p><ul>
+<li>Disks containing cefotaxime and ceftazidime alone are placed alongside disks combining these antibiotics with clavulanate (4 µg/ml).</li>
+<li>A zone diameter increase of ≥ 5 mm with clavulanate, OR a ≥ 3 two-fold MIC decrease, confirms ESBL production.</li>
+<li>Clavulanate inhibits ESBLs, so the organism appears susceptible when the inhibitor is present.</li></ul>
+<p><strong>2. Double Disk Synergy (Approximation) Test:</strong></p><ul>
+<li>A clavulanate-containing disk (amoxicillin-clavulanate) is placed between cefotaxime and ceftazidime disks.</li>
+<li>A keyhole-shaped extension or expansion of the zone of inhibition toward the clavulanate disk indicates ESBL production (synergy).</li></ul>`
+  },
+  {
+    q: "Explain the advantages and limitations of Gas Chromatography (GC) in pharmaceutical analysis, including the role of derivatization.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Advantages of GC:</strong></p><ul>
+<li>Excellent separation efficiency and resolution for volatile compounds.</li>
+<li>High sensitivity — detects compounds at trace (ppm/ppb) levels.</li>
+<li>Coupled with MS (GC-MS), it provides powerful identification and quantification capability.</li>
+<li>Rapid analysis times.</li>
+<li>Suitable for residual solvent testing (ICH Q3C) and impurity analysis.</li></ul>
+<p><strong>Limitations:</strong></p><ul>
+<li>Only suitable for volatile and thermally stable compounds.</li>
+<li>Not applicable to high molecular weight compounds, proteins, or thermally labile drugs without derivatization.</li>
+<li>The column and mobile phase (carrier gas) options are limited compared to HPLC.</li></ul>
+<p><strong>Role of Derivatization:</strong></p><ul>
+<li>Many drug substances are non-volatile or thermally unstable in their native form.</li>
+<li>Derivatization chemically modifies the compound (e.g., silylation, methylation, acylation) to increase volatility and thermal stability.</li>
+<li>This allows previously inaccessible drugs to be analysed by GC.</li></ul>`
+  },
+  {
+    q: "Explain the concept of chiral drugs and why regulatory guidelines require their individual characterization.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p><strong>Chiral drugs</strong> are compounds containing an asymmetric (chiral) carbon atom, allowing them to exist as two non-superimposable mirror-image forms called <strong>enantiomers</strong>.</p>
+<ul>
+<li>Enantiomers have identical physical properties (melting point, solubility) but interact differently with biological systems because receptors, enzymes, and transporters are themselves chiral.</li>
+<li>One enantiomer may have therapeutic activity; the other may be <strong>inactive, less active, or toxic</strong>.</li></ul>
+<p><strong>Example:</strong> Thalidomide — the R-enantiomer was sedative; the S-enantiomer caused teratogenicity.</p>
+<p><strong>Regulatory Requirements:</strong></p><ul>
+<li>ICH guidelines require sponsors to characterize each enantiomer and recommend developing specific analytical methods to separate and quantify them.</li>
+<li>The unwanted enantiomer is treated as an impurity and must meet specified limits.</li>
+<li>Chiral HPLC columns, capillary electrophoresis, and NMR with chiral shift reagents are used for separation and identification.</li></ul>`
+  },
+  {
+    q: "Describe three types of dosage forms — one solid, one semi-solid, and one liquid — explaining their advantages and limitations.",
+    topic: "Dosage Development", marks: 5,
+    answer: `<p><strong>1. Solid Dosage Form — Tablets:</strong></p><ul>
+<li><strong>Advantages:</strong> Accurate dosing, stable, economical, easy to manufacture, patient-compliant (can be swallowed, chewed, or dispersed).</li>
+<li><strong>Limitations:</strong> Some patients (children, elderly) have difficulty swallowing. Coated tablets must not be divided. Delayed onset compared to liquids.</li></ul>
+<p><strong>2. Semi-solid Dosage Form — Creams (o/w type):</strong></p><ul>
+<li><strong>Advantages:</strong> Less greasy than ointments, water-washable, cosmetically acceptable, good for hydrophilic drugs.</li>
+<li><strong>Limitations:</strong> Less occlusive than ointments (lower moisturizing effect), may contain preservatives causing sensitivity, shorter shelf-life than ointments.</li></ul>
+<p><strong>3. Liquid Dosage Form — Elixirs:</strong></p><ul>
+<li><strong>Advantages:</strong> Easier to swallow (paediatric/geriatric use), faster absorption than solids, can accommodate less water-soluble drugs (hydroalcoholic).</li>
+<li><strong>Limitations:</strong> Dose measurement by patient is less accurate, shorter stability, alcohol content may be undesirable for certain patient groups, bulkier for transport and storage.</li></ul>`
+  },
+  {
+    q: "What is Quality Control (QC) in antimicrobial susceptibility testing? Why is it essential, and which ATCC strains are used and for what purpose?",
+    topic: "AST", marks: 5,
+    answer: `<p><strong>Definition:</strong> QC in AST is a procedure that uses standard strains with known susceptibility profiles to verify that the test system performs reliably — ensuring results for patient isolates are accurate.</p>
+<p><strong>Why essential:</strong></p><ul>
+<li>Verifies quality and potency of antibiotic disks.</li>
+<li>Confirms that media meets specifications (pH, thymidine, cation content, depth).</li>
+<li>Detects technical errors in inoculum preparation, incubation, or disk placement.</li>
+<li>Must be performed whenever new drugs or media batches are introduced.</li></ul>
+<p><strong>Key ATCC Strains and Purposes:</strong></p><ul>
+<li><strong>ATCC 25923 S. aureus</strong> — oxacillin-susceptible; general Gram-positive QC and beta-lactam testing.</li>
+<li><strong>ATCC 25922 E. coli</strong> — beta-lactamase negative; general Gram-negative QC.</li>
+<li><strong>ATCC 35218 E. coli</strong> — beta-lactamase positive; tests beta-lactam/inhibitor combinations.</li>
+<li><strong>ATCC 27853 P. aeruginosa</strong> — aminoglycoside and anti-pseudomonal antibiotic QC.</li>
+<li><strong>ATCC 29212 E. faecalis</strong> — checks thymidine levels in MHA (sensitive to thymidine inhibition of SXT).</li>
+<li><strong>ATCC 700603 K. pneumoniae</strong> — ESBL-positive; validates ESBL detection methods.</li></ul>`
+  },
+  {
+    q: "Explain how excipients can negatively interact with Active Pharmaceutical Ingredients (APIs). Give an example.",
+    topic: "Analytical Techniques", marks: 5,
+    answer: `<p>Excipients are inactive ingredients added to pharmaceutical formulations to aid manufacture, improve stability, enhance appearance, or modify drug release. However, some excipients can chemically or physically interact with the API, leading to degradation.</p>
+<p><strong>Types of Negative Interactions:</strong></p><ul>
+<li><strong>Chemical incompatibility:</strong> Excipients can react with the API to form degradation products or drug-excipient adducts, reducing potency and potentially producing toxic impurities.</li>
+<li><strong>Physical incompatibility:</strong> Hygroscopic excipients can alter moisture levels, affecting stability or dissolution of the drug.</li>
+<li><strong>Catalytic degradation:</strong> Metal ion impurities in excipients can catalyse oxidative degradation of the drug.</li></ul>
+<p><strong>Classic Example:</strong></p><ul>
+<li>Primary or secondary amines (e.g., APIs with amine groups) react with reducing sugars such as <strong>lactose, glucose, or maltose</strong> through the Maillard reaction, forming <strong>glycosylamine adducts</strong>.</li>
+<li>This produces brown discolouration and reduces drug potency over time.</li>
+<li>Identified during preformulation compatibility studies and mitigated by choosing non-reducing sugar excipients (e.g., mannitol or microcrystalline cellulose).</li></ul>`
+  },
+  {
+    q: "Compare the Kirby-Bauer method with the Stokes method of disk diffusion. What is unique about each method's interpretation?",
+    topic: "AST", marks: 5,
+    answer: `<p><strong>Kirby-Bauer Method:</strong></p><ul>
+<li>The zone of inhibition diameter is measured in millimetres and compared directly with <strong>absolute CLSI breakpoints</strong> (fixed numerical values for susceptible, intermediate, resistant).</li>
+<li>No reference strain is inoculated on the same plate.</li>
+<li>Results are independent, standardized, and internationally comparable.</li>
+<li>Requires strict standardization of all variables (medium, inoculum, disk potency, incubation).</li></ul>
+<p><strong>Stokes Method:</strong></p><ul>
+<li>The test organism and a <strong>control strain of known susceptibility</strong> are inoculated on the same plate.</li>
+<li>Zone size is interpreted <strong>relative to the control strain's zone</strong>, not absolute values.</li>
+<li>Interpretation: Susceptible = test zone ≥ control; Intermediate = 2–3 mm smaller; Resistant = > 2 mm smaller than control.</li>
+<li>Less affected by minor variations in disk potency or media batch, as both strains are tested simultaneously under identical conditions.</li></ul>
+<p><strong>Summary:</strong> Kirby-Bauer uses absolute standards; Stokes uses relative comparison — both aim to guide appropriate antibiotic therapy.</p>`
+  }
+];
+
+// ═══════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════
+let mcqState = { score: 0, answered: 0 };
+let saState  = { score: 0, marked: 0 };
+
+// ═══════════════════════════════════════════════
+//  BUILD MCQ
+// ═══════════════════════════════════════════════
+function buildMCQ() {
+  const container = document.getElementById('mcq-container');
+  container.innerHTML = '';
+  mcqs.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'mcq-card';
+    card.id = `mcq-${idx}`;
+
+    const letters = ['A','B','C','D'];
+    const opts = item.opts.map((o, i) => `
+      <button class="option-btn" onclick="selectMCQ(${idx},${i})">
+        <span class="option-letter">${letters[i]}</span>
+        <span>${o}</span>
+      </button>`).join('');
+
+    card.innerHTML = `
+      <div class="mcq-meta">
+        <span class="mcq-num">Q${idx+1}</span>
+        <span class="mcq-tag">${item.topic}</span>
+      </div>
+      <p class="mcq-q">${item.q}</p>
+      <div class="options">${opts}</div>
+      <div class="feedback" id="fb-${idx}"></div>`;
+    container.appendChild(card);
+  });
+  updateMCQScore();
+}
+
+function selectMCQ(idx, chosen) {
+  const card = document.getElementById(`mcq-${idx}`);
+  if (card.classList.contains('answered-correct') || card.classList.contains('answered-wrong')) return;
+
+  const btns = card.querySelectorAll('.option-btn');
+  const correct = mcqs[idx].ans;
+  const fb = document.getElementById(`fb-${idx}`);
+
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === correct && i !== chosen) b.classList.add('reveal-correct');
+  });
+
+  if (chosen === correct) {
+    btns[chosen].classList.add('correct');
+    card.classList.add('answered-correct');
+    fb.className = 'feedback correct-fb show';
+    fb.textContent = '✓ Correct — ' + mcqs[idx].explain;
+    mcqState.score++;
+  } else {
+    btns[chosen].classList.add('wrong');
+    card.classList.add('answered-wrong');
+    fb.className = 'feedback wrong-fb show';
+    fb.textContent = '✗ Incorrect — ' + mcqs[idx].explain;
+  }
+  mcqState.answered++;
+  updateMCQScore();
+}
+
+function updateMCQScore() {
+  document.getElementById('mcq-score').textContent = mcqState.score;
+  document.getElementById('mcq-answered').textContent = mcqState.answered;
+  const pct = mcqState.answered ? Math.round(mcqState.score / mcqState.answered * 100) : 0;
+  document.getElementById('mcq-percent').textContent = pct + '% correct so far';
+  document.getElementById('mcq-prog-label').textContent = mcqState.answered + ' / ' + mcqs.length;
+  document.getElementById('mcq-bar').style.width = (mcqState.answered / mcqs.length * 100) + '%';
+}
+
+function resetMCQ() {
+  mcqState = { score: 0, answered: 0 };
+  buildMCQ();
+}
+
+// ═══════════════════════════════════════════════
+//  BUILD SA
+// ═══════════════════════════════════════════════
+function buildSA() {
+  const container = document.getElementById('sa-container');
+  container.innerHTML = '';
+  saqs.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'sa-card';
+    card.id = `sa-${idx}`;
+    card.innerHTML = `
+      <div class="sa-meta">
+        <span class="sa-num">Q${idx+1}</span>
+        <span class="sa-marks">5 Marks</span>
+        <span class="sa-tag">${item.topic}</span>
+      </div>
+      <p class="sa-q">${item.q}</p>
+      <textarea class="sa-answer-area" placeholder="Write your answer here..." id="sa-input-${idx}"></textarea>
+      <div class="sa-actions">
+        <button class="btn-reveal" onclick="revealSA(${idx})">Show Model Answer</button>
+        <button class="btn-self-correct" id="btn-c-${idx}" onclick="markSA(${idx},true)" style="display:none">✓ I got it</button>
+        <button class="btn-self-wrong" id="btn-w-${idx}" onclick="markSA(${idx},false)" style="display:none">✗ Missed it</button>
+      </div>
+      <div class="sa-model-answer" id="sa-ans-${idx}">
+        <h4>Model Answer</h4>
+        ${item.answer}
+      </div>
+      <div id="sa-badge-${idx}"></div>`;
+    container.appendChild(card);
+  });
+  updateSAScore();
+}
+
+function revealSA(idx) {
+  document.getElementById(`sa-ans-${idx}`).classList.add('show');
+  document.getElementById(`btn-c-${idx}`).style.display = 'inline-flex';
+  document.getElementById(`btn-w-${idx}`).style.display = 'inline-flex';
+}
+
+function markSA(idx, correct) {
+  const card = document.getElementById(`sa-${idx}`);
+  const badge = document.getElementById(`sa-badge-${idx}`);
+  document.getElementById(`btn-c-${idx}`).style.display = 'none';
+  document.getElementById(`btn-w-${idx}`).style.display = 'none';
+
+  if (card.dataset.marked) return;
+  card.dataset.marked = '1';
+
+  if (correct) {
+    badge.innerHTML = '<span class="sa-result-badge badge-correct">✓ Marked correct — 5 / 5</span>';
+    saState.score += 5;
+  } else {
+    badge.innerHTML = '<span class="sa-result-badge badge-wrong">✗ Marked for review — 0 / 5</span>';
+  }
+  saState.marked++;
+  updateSAScore();
+}
+
+function updateSAScore() {
+  document.getElementById('sa-score').textContent = saState.score;
+  document.getElementById('sa-answered').textContent = saState.marked;
+  document.getElementById('sa-marks-label').textContent = 'Total potential marks: 100';
+  document.getElementById('sa-prog-label').textContent = saState.marked + ' / ' + saqs.length;
+  document.getElementById('sa-bar').style.width = (saState.marked / saqs.length * 100) + '%';
+}
+
+function resetSA() {
+  saState = { score: 0, marked: 0 };
+  buildSA();
+}
+
+// ═══════════════════════════════════════════════
+//  TAB SWITCHING
+// ═══════════════════════════════════════════════
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+buildMCQ();
+buildSA();
+</script>
+</body>
+</html>

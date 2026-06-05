@@ -1,0 +1,1996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analysis of Therapeutic Drug Substances — Complete Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── THEME VARIABLES ── */
+:root {
+  --ink: #0f1117;
+  --paper: #faf8f3;
+  --cream: #f3efe6;
+  --gold: #c9922a;
+  --gold-light: #e8c97a;
+  --teal: #1a6b6b;
+  --teal-light: #d0eaea;
+  --wine: #7a1f3d;
+  --wine-light: #f5dde5;
+  --slate: #3a4a5c;
+  --slate-light: #dde4ed;
+  --moss: #3a5c2e;
+  --moss-light: #d8ebd3;
+  --border: rgba(15,17,23,0.12);
+  --shadow: 0 4px 24px rgba(15,17,23,0.08);
+  --bg-primary: #faf8f3;
+  --bg-secondary: #f3efe6;
+  --bg-card: #ffffff;
+  --bg-mech-body: #ffffff;
+  --text-primary: #0f1117;
+  --text-secondary: #444;
+  --text-muted: #666;
+  --nav-bg: rgba(250,248,243,0.95);
+  --tbl-head: #f3efe6;
+}
+[data-theme="dark"] {
+  --bg-primary: #0f1117;
+  --bg-secondary: #181c27;
+  --bg-card: #1e2330;
+  --bg-mech-body: #1a1f2e;
+  --text-primary: #e8e4da;
+  --text-secondary: #b0aaa0;
+  --text-muted: #888;
+  --border: rgba(232,228,218,0.1);
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --nav-bg: rgba(15,17,23,0.96);
+  --cream: #181c27;
+  --paper: #0f1117;
+  --tbl-head: #1e2330;
+  --moss-light: #1a2c16;
+  --slate-light: #1a2030;
+  --wine-light: #2a0f1a;
+  --teal-light: #0a2020;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 15px;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* ── THEME TOGGLE ── */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 500;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+.theme-toggle:hover { transform: scale(1.05); }
+.toggle-icon { font-size: 14px; }
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--ink);
+  color: #e8e4da;
+  padding: 5rem 2rem 3.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(201,146,42,0.04) 40px, rgba(201,146,42,0.04) 41px);
+}
+.header-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 1.2rem;
+  opacity: 0.8;
+}
+.site-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  position: relative;
+}
+.site-header h1 em { color: var(--gold-light); font-style: italic; }
+.header-subtitle {
+  font-size: 15px;
+  opacity: 0.65;
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+.header-pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.pill {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 5px 16px;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ── NAV ── */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-btn {
+  padding: 1rem 1.2rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.5;
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: opacity 0.2s, border-color 0.2s;
+}
+.nav-btn:hover { opacity: 1; }
+.nav-btn.active { opacity: 1; border-bottom-color: var(--gold); }
+
+/* ── LAYOUT ── */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── CHAPTER HERO ── */
+.chapter { padding: 5rem 0 0; }
+.chapter-hero {
+  border-radius: 16px;
+  padding: 3rem;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.chapter-hero.ch1 { background: linear-gradient(135deg, #1a3d2e 0%, #0f2a1f 100%); color: #e8f5e2; }
+.chapter-hero.ch2 { background: linear-gradient(135deg, #1a3560 0%, #0f2040 100%); color: #dde8f5; }
+.chapter-hero.ch3 { background: linear-gradient(135deg, #4a1a28 0%, #2d0f18 100%); color: #f5dde5; }
+.chapter-hero::after {
+  content: attr(data-num);
+  position: absolute;
+  right: -20px;
+  bottom: -40px;
+  font-family: 'Playfair Display', serif;
+  font-size: 200px;
+  font-weight: 700;
+  opacity: 0.06;
+  line-height: 1;
+  pointer-events: none;
+}
+.chapter-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.6;
+  margin-bottom: 0.75rem;
+}
+.chapter-hero h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.chapter-hero p { font-size: 14.5px; opacity: 0.78; max-width: 720px; font-weight: 300; line-height: 1.75; }
+.chapter-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 1.5rem; }
+.chapter-tag {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ── SECTION HEADER ── */
+.section-hd { display: flex; align-items: center; gap: 12px; margin: 3rem 0 1.5rem; }
+.section-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.sn-green { background: var(--moss); color: white; }
+.sn-blue  { background: var(--slate); color: white; }
+.sn-wine  { background: var(--wine); color: white; }
+.sn-gold  { background: var(--gold); color: white; }
+.section-hd h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: var(--text-primary); }
+
+/* ── CARD ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+.ct-green { color: var(--moss); }
+.ct-blue  { color: var(--slate); }
+.ct-wine  { color: var(--wine); }
+.ct-teal  { color: var(--teal); }
+.ct-gold  { color: var(--gold); }
+.card p   { font-size: 14px; line-height: 1.7; color: var(--text-secondary); margin-bottom: 0.4rem; }
+.card p:last-child { margin-bottom: 0; }
+.card strong { color: var(--text-primary); }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.g3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.g4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+
+/* ── DEF CARD ── */
+.def-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.def-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  border-left: 4px solid;
+}
+.def-card.dc-green { border-left-color: var(--moss); }
+.def-card.dc-blue  { border-left-color: var(--slate); }
+.def-card.dc-wine  { border-left-color: var(--wine); }
+.def-card.dc-teal  { border-left-color: var(--teal); }
+.def-card.dc-gold  { border-left-color: var(--gold); }
+.def-term { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; color: var(--text-primary); }
+.def-body { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── TABLE ── */
+.tbl-wrap { overflow-x: auto; margin-bottom: 1.5rem; border-radius: 10px; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th {
+  background: var(--tbl-head);
+  font-family: 'DM Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 500;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-secondary); vertical-align: top; line-height: 1.65; }
+tr:last-child td { border-bottom: none; }
+
+/* ── FLOW ── */
+.flow-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 1rem 0 1.5rem; }
+.flow-box {
+  background: var(--ink);
+  color: #e8e4da;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.flow-box.fb-green { background: var(--moss); }
+.flow-box.fb-blue  { background: var(--slate); }
+.flow-box.fb-wine  { background: var(--wine); }
+.flow-box.fb-teal  { background: var(--teal); }
+.flow-box.fb-gold  { background: var(--gold); }
+.flow-dot { color: var(--gold); font-size: 20px; line-height: 1; }
+
+/* ── CALLOUT ── */
+.callout {
+  border-radius: 10px;
+  padding: 1.1rem 1.4rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  line-height: 1.7;
+  border-left: 4px solid;
+  color: var(--text-secondary);
+}
+.co-warn    { background: var(--bg-secondary); border-left-color: var(--gold); }
+.co-info    { background: var(--slate-light); border-left-color: var(--slate); }
+.co-danger  { background: var(--wine-light); border-left-color: var(--wine); }
+.co-success { background: var(--moss-light); border-left-color: var(--moss); }
+.co-teal    { background: var(--teal-light); border-left-color: var(--teal); }
+.callout strong { color: var(--text-primary); }
+
+/* ── TAGS ── */
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 0.5rem 0 1rem; }
+.tag {
+  font-size: 12px;
+  font-family: 'DM Mono', monospace;
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 9px;
+  letter-spacing: 0.03em;
+}
+.tag.tg { background: var(--moss-light); color: var(--moss); }
+.tag.tb { background: var(--slate-light); color: var(--slate); }
+.tag.tw { background: var(--wine-light); color: var(--wine); }
+.tag.tt { background: var(--teal-light); color: var(--teal); }
+.tag.to { background: var(--bg-secondary); color: var(--gold); }
+
+/* ── MECHANISM BOX ── */
+.mech { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1rem; }
+.mech-head {
+  padding: 0.75rem 1.25rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.mh-green { background: var(--moss); color: white; }
+.mh-blue  { background: var(--slate); color: white; }
+.mh-wine  { background: var(--wine); color: white; }
+.mh-teal  { background: var(--teal); color: white; }
+.mh-gold  { background: var(--gold); color: white; }
+.mech-body { padding: 1.25rem; font-size: 14px; color: var(--text-secondary); line-height: 1.75; background: var(--bg-mech-body); }
+.mech-body p { margin-bottom: 0.6rem; }
+.mech-body p:last-child { margin-bottom: 0; }
+.mech-body strong { color: var(--text-primary); }
+
+/* ── BULLET LIST (replaces numbered paragraphs) ── */
+.blist { list-style: none; margin: 0.5rem 0 0.75rem; }
+.blist li {
+  padding: 3px 0 3px 1.4rem;
+  position: relative;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.blist li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 16px; line-height: 1.3; }
+.blist li strong { color: var(--text-primary); }
+
+/* ── STATUS BADGES ── */
+.badge { display: inline-block; border-radius: 4px; padding: 2px 8px; font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 500; }
+.bd-s { background: #d5f0dc; color: #1a5c29; }
+.bd-i { background: #fef0c7; color: #854f0b; }
+.bd-r { background: #fde0e0; color: #7a1f1f; }
+
+/* ── CITATION ── */
+.cite-block {
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 0.8rem 1.1rem;
+  margin: 1rem 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.cite-block a { color: var(--gold); text-decoration: none; font-weight: 500; }
+.cite-block a:hover { text-decoration: underline; }
+.cite-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+/* ── INFOBOX ── */
+.infobox { background: var(--bg-secondary); border-radius: 8px; padding: 0.8rem 1rem; margin: 4px 0; }
+.infobox p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0.3rem; }
+.infobox p:last-child { margin-bottom: 0; }
+.infobox strong { color: var(--text-primary); }
+
+/* ── DIVIDER ── */
+.chapter-divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 4rem 0; }
+
+/* ── FOOTER ── */
+footer { background: var(--ink); color: #e8e4da; text-align: center; padding: 3rem 2rem; margin-top: 5rem; }
+footer p { font-size: 13px; opacity: 0.5; font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+footer a { color: var(--gold-light); text-decoration: none; opacity: 1; }
+footer a:hover { text-decoration: underline; }
+
+/* ── BACK TOP ── */
+.back-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: transform 0.2s;
+  z-index: 200;
+}
+.back-top:hover { transform: translateY(-3px); }
+
+/* ── QUESTION LINK BANNER ── */
+.qbanner {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--teal) 100%);
+  color: white;
+  text-align: center;
+  padding: 2rem;
+  margin: 3rem 0 0;
+}
+.qbanner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
+.qbanner p { font-size: 14px; opacity: 0.85; margin-bottom: 1.2rem; }
+.qbanner a {
+  background: white;
+  color: var(--moss);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+.qbanner a:hover { transform: scale(1.04); }
+
+@media (max-width: 640px) {
+  .chapter-hero { padding: 2rem 1.5rem; }
+  .container { padding: 0 1rem; }
+  .nav-btn { padding: 0.9rem 0.8rem; font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- THEME TOGGLE -->
+<button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">
+  <span class="toggle-icon">☀️</span>
+  <span id="themeTxt">Light</span>
+</button>
+
+<!-- HEADER -->
+<header class="site-header">
+  <h1>Analysis of <em>Therapeutic</em><br>Drug Substances</h1>
+  <p class="header-subtitle">A comprehensive, peer-referenced resource covering drug development, analytical methods, and antimicrobial susceptibility testing — three interconnected pillars of pharmaceutical science.</p>
+  <div class="header-pills">
+    <span class="pill">Unit 1 · Dosage Development</span>
+    <span class="pill">Unit 2 · Analytical Techniques</span>
+    <span class="pill">Unit 3 · Antimicrobial AST</span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a href="#unit1" class="nav-btn">I · Drug Development</a>
+    <a href="#unit2" class="nav-btn">II · Analytical Techniques</a>
+    <a href="#unit3" class="nav-btn">III · AST Disk Diffusion</a>
+    <a href="pharma_questions.html" class="nav-btn" style="color:var(--gold);opacity:1;">✦ Practice Questions</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ════════════════════════════════════════
+     UNIT 1 — DOSAGE DEVELOPMENT
+════════════════════════════════════════ -->
+<section id="unit1" class="chapter">
+<div class="container">
+
+  <div class="chapter-hero ch1" data-num="1">
+    <div class="chapter-num">Unit One · Foundation</div>
+    <h2>Steps Involved in Dosage Development of a New Drug</h2>
+    <p>Before any drug reaches a patient, it undergoes a rigorous, multi-phase development pipeline. This unit traces the complete journey — from characterizing the raw API through preformulation studies, to designing the final dosage form, proving bioequivalence, satisfying regulatory agencies, and finally manufacturing and supplying the finished product.</p>
+    <div class="chapter-tags">
+      <span class="chapter-tag">API Characterization</span>
+      <span class="chapter-tag">Preformulation</span>
+      <span class="chapter-tag">Dosage Forms</span>
+      <span class="chapter-tag">Bioequivalence</span>
+      <span class="chapter-tag">Regulatory Affairs</span>
+      <span class="chapter-tag">Manufacturing</span>
+    </div>
+  </div>
+
+  <!-- DEFINITIONS -->
+  <div class="section-hd">
+    <div class="section-num sn-green">0</div>
+    <h3>Foundational Definitions</h3>
+  </div>
+  <div class="def-grid">
+    <div class="def-card dc-green">
+      <div class="def-term">Drug</div>
+      <div class="def-body">Any substance or product that is used or intended to be used to modify or explore physiological states for the benefit of the recipient.</div>
+    </div>
+    <div class="def-card dc-blue">
+      <div class="def-term">Dosage Form</div>
+      <div class="def-body">A mixture of active drug components (API) and non-drug components (excipients) processed into a final pharmaceutical preparation suitable for administration.</div>
+    </div>
+    <div class="def-card dc-wine">
+      <div class="def-term">Dose</div>
+      <div class="def-body">The quantity of medication to be administered at each time interval to produce a certain degree of pharmacological response in a patient.</div>
+    </div>
+    <div class="def-card dc-teal">
+      <div class="def-term">Bioavailability</div>
+      <div class="def-body">The rate and extent of absorption of an unchanged drug into systemic circulation. Governs how much of the administered dose reaches the site of action.</div>
+    </div>
+    <div class="def-card dc-gold">
+      <div class="def-term">API</div>
+      <div class="def-body">Active Pharmaceutical Ingredient — the biologically active substance in a drug product responsible for the intended therapeutic effect.</div>
+    </div>
+    <div class="def-card dc-green">
+      <div class="def-term">Excipients</div>
+      <div class="def-body">Inactive pharmaceutical ingredients added for technological, biopharmaceutical, or stability reasons. Not pharmacologically active but essential for dosage form function.</div>
+    </div>
+  </div>
+
+  <!-- PROCESS FLOW -->
+  <div class="section-hd">
+    <div class="section-num sn-green">★</div>
+    <h3>Complete Development Pipeline</h3>
+  </div>
+  <div class="flow-row">
+    <span class="flow-box fb-green">API</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Preformulation</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">R&D Formulation</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Bioequivalence</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Regulatory Affairs</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Out-Licensing</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Manufacturing</span><span class="flow-dot">·</span>
+    <span class="flow-box fb-green">Packaging & Supply</span>
+  </div>
+
+  <!-- STEP 1: PREFORMULATION -->
+  <div class="section-hd">
+    <div class="section-num sn-green">1</div>
+    <h3>Preformulation Studies of the API</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-green">Definition & Objective</div>
+    <div class="mech-body">
+      <p>Preformulation involves the application of <strong>biopharmaceutical principles</strong> to the physicochemical parameters of a drug, with the goal of designing an optimum drug delivery system. Characterization of the drug molecule is the most important step at this phase. The studies conducted depend on the type of dosage form and the nature of the drug molecule.</p>
+    </div>
+  </div>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    Preformulation studies focus on physicochemical properties — drug solubility, partition coefficient, dissolution rate, polymorphic forms and stability — that affect drug performance and dosage form development. <a href="https://ijpsr.com/bft-article/a-review-on-pharmaceutical-preformulation-studies-in-formulation-and-development-of-new-drug-molecules/" target="_blank">International Journal of Pharmaceutical Sciences and Research (2022)</a>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-green">1. Solubility Determination</div>
+      <p><strong>Intrinsic solubility (C₀):</strong> Solubility of the un-ionized form of the drug in pure water.</p>
+      <p><strong>Saturated solubility (Cs):</strong> Maximum drug that dissolves in a solvent at a given temperature.</p>
+      <p>Cosolvents used to increase solubility — <strong>PEG 400 + 5% H₂O</strong> and <strong>Glycerin</strong> — are particularly important for IV injections where tonicity adjustment is critical.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">2. pH & pKa Determination</div>
+      <p>The <strong>pKa (dissociation constant)</strong> determines the degree of ionization at any given pH. Using the Henderson-Hasselbalch equation:</p>
+      <p><em>pH = pKa + log ([A⁻] / [HA])</em></p>
+      <p>Ionization affects membrane permeability, absorption, distribution, renal excretion, and stability. pH also governs the choice of salt form of the drug.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">3. Partition Coefficient (log P)</div>
+      <p>Measures lipophilicity — the ratio of drug concentration in octanol vs. water. Higher log P = more lipophilic.</p>
+      <p>Predicts:</p>
+      <ul class="blist">
+        <li>Passive membrane permeability</li>
+        <li>CNS penetration potential</li>
+        <li>Plasma protein binding</li>
+        <li>Route of administration suitability</li>
+        <li>Risk of accumulation in fatty tissues</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">4. Solid-State Properties</div>
+      <p><strong>Polymorphism:</strong> The ability of a drug to exist in more than one crystal form. Different polymorphs of the same drug can differ in:</p>
+      <ul class="blist">
+        <li>Solubility and dissolution rate</li>
+        <li>Melting point and stability</li>
+        <li>Bioavailability</li>
+      </ul>
+      <p><strong>Amorphism:</strong> The non-crystalline, disordered solid state. Generally higher solubility than crystalline forms but lower physical stability.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">5. Powder Flow Properties</div>
+      <p>Critical for tablet compression and capsule filling. Poor flow leads to weight variation and content uniformity failures.</p>
+      <p>Measured by:</p>
+      <ul class="blist">
+        <li>Angle of repose</li>
+        <li>Carr's compressibility index</li>
+        <li>Hausner ratio</li>
+      </ul>
+      <p>Glidants (e.g., colloidal SiO₂) may be added to improve flow.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">6. Intrinsic Dissolution Rate</div>
+      <p>Rate at which a pure drug substance dissolves under standard conditions (fixed surface area, agitation, temperature).</p>
+      <p>Used to:</p>
+      <ul class="blist">
+        <li>Predict in vivo dissolution behavior</li>
+        <li>Compare polymorphs or salt forms</li>
+        <li>Support BCS (Biopharmaceutics Classification System) classification</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STEP 2: R&D FORMULATION -->
+  <div class="section-hd">
+    <div class="section-num sn-green">2</div>
+    <h3>R&D Formulation</h3>
+  </div>
+  <p style="margin-bottom:1.2rem; font-size:14px; color:var(--text-secondary);">The pharmaceutical dosage form is a <strong>drug delivery system</strong> formed by technological processing. It determines the physical form of the final product and must reflect therapeutic intentions, route of administration, and dosing requirements.</p>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    Preformulation studies provide essential information for formulation design — selection of excipients, pharmaceutical technology, and process parameters — to ensure quality, stability, and in vivo behaviour of the final dosage form. <a href="https://www.mdpi.com/2076-3417/12/11/5333" target="_blank">Applied Sciences, MDPI (2022)</a>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-green">Role of Excipients</div>
+    <div class="mech-body">
+      <p>Excipients are added for technological, biopharmaceutical, or stability reasons. Key categories include:</p>
+      <div class="tags">
+        <span class="tag tg">Diluents / Fillers</span>
+        <span class="tag tg">Binders</span>
+        <span class="tag tg">Lubricants</span>
+        <span class="tag tg">Disintegrants</span>
+        <span class="tag tg">Coatings</span>
+        <span class="tag tg">Preservatives</span>
+        <span class="tag tg">Stabilizers</span>
+        <span class="tag tg">Colorants</span>
+        <span class="tag tg">Flavourings</span>
+      </div>
+      <p>Formulations are developed and tested for both physical and chemical stability at <strong>accelerated temperatures</strong> per ICH guidelines before scale-up.</p>
+    </div>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-green">2a</div>
+    <h3>Evaluation Tests for Dosage Forms</h3>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="card-title ct-green">Weight Variation</div><p>Ensures each unit contains the correct amount of drug. Multiple tablets/capsules are weighed and checked against allowed CLSI limits.</p></div>
+    <div class="card"><div class="card-title ct-green">Drug Content / Assay</div><p>Confirms drug content per unit is within the specified range — usually 90–110% of labeled amount.</p></div>
+    <div class="card"><div class="card-title ct-green">Dissolution Testing</div><p>Measures how much drug is released from the dosage form into solution over time — critical predictor of bioavailability.</p></div>
+    <div class="card"><div class="card-title ct-green">Stability Testing</div><p>Accelerated (40°C/75% RH) and long-term studies to predict shelf life per ICH Q1A guidelines.</p></div>
+    <div class="card"><div class="card-title ct-green">Skin Irritant Test</div><p>For topical formulations — assessed using animal skin or in vitro skin models to evaluate irritancy potential.</p></div>
+    <div class="card"><div class="card-title ct-green">Viscosity</div><p>For liquid and semisolid forms — affects pourability, spreadability, and drug release characteristics.</p></div>
+  </div>
+
+  <!-- DOSAGE FORMS -->
+  <div class="section-hd">
+    <div class="section-num sn-green">2b</div>
+    <h3>Classification of Dosage Forms</h3>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-green">A — Solid Dosage Forms</div>
+    <div class="mech-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Form</th><th>Composition</th><th>GIT Mechanism</th><th>Key Notes</th></tr>
+          <tr><td><strong>Tablets (Conventional)</strong></td><td>Compressed API + excipients</td><td>Disintegration → Disaggregation → Dissolution → Absorption</td><td>Can be divided (half/quarters) unless otherwise indicated</td></tr>
+          <tr><td><strong>Tablets (Coated)</strong></td><td>Compressed core + coating layer</td><td>Coating dissolves first, then tablet disintegrates</td><td>Must NOT be divided. Purposes: mask taste/smell, prevent oesophageal adhesion, control release site, ensure stability</td></tr>
+          <tr><td><strong>Hard Gelatin Capsules</strong></td><td>API + excipients in gelatin shell (cap + body)</td><td>Gelatin softens → swells → dissolves → particles disperse → disintegrate → API dissolves → absorption</td><td>Filled with powders, pellets, granules, paste, or oil</td></tr>
+          <tr><td><strong>Soft Gelatin Capsules</strong></td><td>API in oil/liquid fill in soft gelatin shell</td><td>Shell dissolves → liquid API released → absorption</td><td>Ideal for lipophilic drugs, oils, and liquid fills</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-green">B — Liquid Dosage Forms</div>
+    <div class="mech-body">
+      <div class="tbl-wrap">
+        <table>
+          <tr><th>Form</th><th>Base / Vehicle</th><th>Key Feature</th></tr>
+          <tr><td><strong>Solutions (Drops)</strong></td><td>Aqueous or oil</td><td>True solution — drug fully dissolved. Fastest oral absorption.</td></tr>
+          <tr><td><strong>Syrups</strong></td><td>Aqueous + sugar ± flavouring</td><td>High sugar content acts as preservative; improves palatability. Sugar-free versions use polyols.</td></tr>
+          <tr><td><strong>Elixirs</strong></td><td>Sweetened <em>hydroalcoholic</em> (water + alcohol)</td><td>Accommodate drugs with limited water solubility. Alcohol content 4–40%.</td></tr>
+          <tr><td><strong>Tinctures</strong></td><td>Alcoholic or hydroalcoholic — herbal extracts</td><td>Traditionally 1:5 or 1:10 drug:solvent ratio. High alcohol content.</td></tr>
+          <tr><td><strong>Emulsions</strong></td><td>API + oil + water + emulsifying agent</td><td>Two immiscible phases stabilized by emulsifier. Thermodynamically unstable. For lipophilic APIs.</td></tr>
+          <tr><td><strong>Suspensions</strong></td><td>API + solvent + suspending agent</td><td>Drug dispersed (not dissolved). Must be shaken before use. <strong>NOT for high-potency drugs</strong> — dose uniformity risk.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-green">C — Semisolid Dosage Forms</div>
+    <div class="mech-body">
+      <div class="g2">
+        <div>
+          <p><strong>Gels:</strong> Semisolid systems in which a liquid phase is constrained within a 3-dimensional cross-linked matrix. Used topically or for mucous membranes.</p>
+          <br>
+          <p><strong>Creams (semisolid emulsions with &gt;10% water):</strong></p>
+          <ul class="blist">
+            <li><em>o/w creams (oil-in-water):</em> Less greasy, cosmetically acceptable, easily water-washable. Drug released readily into aqueous environment.</li>
+            <li><em>w/o creams (water-in-oil):</em> Better for lipophilic APIs. Moisturizing, occlusive — prevents transepidermal water loss. Used as cold creams.</li>
+          </ul>
+          <br>
+          <p><strong>Ointments:</strong> Semisolid dosage forms with oleaginous, water-soluble, or emulsifying base.</p>
+          <ul class="blist">
+            <li><em>Oleaginous (hydrocarbon) base:</em> Petrolatum / Vaseline. Very occlusive. Insoluble in water.</li>
+            <li><em>Water-soluble base:</em> Polyethylene glycol (PEG) / macrogol ointments. Water-washable, non-occlusive.</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Suppositories (shaped semisolids):</strong></p>
+          <ul class="blist">
+            <li>Solid at room temperature; melts at body temperature (37°C)</li>
+            <li>Intended for rectal administration</li>
+            <li>Different sizes and shapes for children and adults</li>
+            <li>Must be chemically stable and inert</li>
+            <li>Oleaginous bases: cacao butter, adeps neutralis</li>
+            <li>Aqueous bases: PEG, glycerinated gelatine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-green">D — Gaseous Dosage Forms</div>
+    <div class="mech-body">
+      <ul class="blist">
+        <li><strong>Medicinal gases:</strong> Oxygen, nitrous oxide — administered directly by inhalation</li>
+        <li><strong>Inhalation / volatile anaesthetics:</strong> Vaporized before administration (e.g., isoflurane, sevoflurane)</li>
+        <li><strong>Aerodispersions of solid particles:</strong> Dry powder inhalers (DPI), metered-dose inhalers (MDI) — deliver drug directly to the respiratory tract</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BIOEQUIVALENCE -->
+  <div class="section-hd">
+    <div class="section-num sn-green">3</div>
+    <h3>Bioequivalence (BE) Studies</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-green">Definition</div>
+    <div class="mech-body">
+      <p>Bioequivalence is a relative term denoting that the drug substance in two or more <strong>identical dosage forms</strong> reaches systemic circulation at the <strong>same relative rate</strong> and to the <strong>same relative extent</strong>. Both conditions must be satisfied simultaneously.</p>
+      <p>BE studies are conducted by:</p>
+      <ul class="blist">
+        <li><strong>Pharmacokinetic method</strong> — comparing AUC (area under the curve), Cmax, and Tmax</li>
+        <li><strong>Pharmacodynamic method</strong> — using a clinical endpoint or PD marker</li>
+      </ul>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-green">In Vivo BE Studies</div>
+      <p>Required for:</p>
+      <ul class="blist">
+        <li>Oral immediate-release products with systemic action</li>
+        <li>Non-oral immediate-release products</li>
+        <li>Modified-release products with systemic action</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">In Vitro BE Studies</div>
+      <p>Acceptable when:</p>
+      <ul class="blist">
+        <li>Drug product slightly reformulated by original manufacturer</li>
+        <li>An acceptable in vitro–in vivo correlation (IVIVC) has been established</li>
+        <li>The in vitro dissolution rate meets regulatory standards</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- REGULATORY -->
+  <div class="section-hd">
+    <div class="section-num sn-green">4</div>
+    <h3>Regulatory Affairs (RA) & Out-Licensing</h3>
+  </div>
+  <div class="callout co-info"><strong>Regulatory Affairs (RA)</strong>, also called Government Affairs, is a profession within regulated industries (pharmaceuticals, medical devices, energy) whose purpose is to ensure healthcare products are safe, effective, and available worldwide.</div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Country</th><th>Body</th><th>Full Name</th><th>Key Function</th></tr>
+      <tr><td><strong>India</strong></td><td>CDSCO</td><td>Central Drug Standard Control Organisation</td><td>Sets safety, efficacy and quality standards; publishes and updates the Indian Pharmacopeia</td></tr>
+      <tr><td><strong>USA</strong></td><td>FDA</td><td>Food and Drug Administration</td><td>Regulates food safety, tobacco, dietary supplements, prescription drugs, cosmetics, and OTC products</td></tr>
+      <tr><td><strong>Canada</strong></td><td>HPFB</td><td>Health Products and Food Branch</td><td>Minimizes health risk factors while maximizing safety provided by the regulatory system for health products</td></tr>
+      <tr><td><strong>Australia</strong></td><td>TGA</td><td>Therapeutic Goods Administration</td><td>Regulates therapeutic goods including medicines and medical devices</td></tr>
+    </table>
+  </div>
+
+  <!-- MANUFACTURING -->
+  <div class="section-hd">
+    <div class="section-num sn-green">5</div>
+    <h3>Manufacturing & Packaging</h3>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-green">Solid Dosage Forms</div>
+      <p><strong>Processes:</strong></p>
+      <ul class="blist">
+        <li>Fluid bed granulation</li>
+        <li>High shear granulation + fluid bed drying</li>
+        <li>Roller compaction (dry granulation)</li>
+        <li>Direct compression (dry mixing)</li>
+      </ul>
+      <p><strong>Packaging:</strong> Glass bottles, HDPE plastic bottles, blister packs (PVC/Aluminium)</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">Sterile / Injectable Forms</div>
+      <p><strong>Types:</strong></p>
+      <ul class="blist">
+        <li>Injectable solutions (water/oil/ethanol-based)</li>
+        <li>Suspensions</li>
+        <li>Freeze-dried (lyophilized) powders</li>
+      </ul>
+      <p><strong>Processing:</strong> Aseptically manufactured · Aseptically filled · Terminally sterilized</p>
+      <p><strong>Packaging:</strong> Glass vials (5–100 ml), ampoules (1–100 ml), thread bottles (5–100 ml)</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">Liquid Dosage Forms</div>
+      <p><strong>Processes:</strong></p>
+      <ul class="blist">
+        <li>Mixing and homogenisation</li>
+        <li>Filtering (membrane filtration for sterility)</li>
+      </ul>
+      <p><strong>Packaging:</strong> Glass bottles, plastic bottles</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-green">Semisolid Forms</div>
+      <p><strong>Creams/Ointments/Gels:</strong> Mixing and homogenisation in jacketed vessels at controlled temperature</p>
+      <p><strong>Packaging:</strong> Plastic tubes (laminate or aluminium), jars</p>
+    </div>
+  </div>
+
+</div>
+</section>
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════════
+     UNIT 2 — ANALYTICAL TECHNIQUES
+════════════════════════════════════════ -->
+<section id="unit2" class="chapter">
+<div class="container">
+
+  <div class="chapter-hero ch2" data-num="2">
+    <div class="chapter-num">Unit Two · Core Methods</div>
+    <h2>Analytical Techniques in the Analysis of Therapeutic & Toxic Substances</h2>
+    <p>Analytical chemistry is the engine of drug development, quality control, and safety monitoring. From the earliest stages of compound discovery through to post-marketing surveillance, analytical methods provide the quantitative and qualitative data that define a drug's identity, purity, potency, and safety profile. This unit covers all major analytical platforms — titrimetric, chromatographic, spectroscopic, electrochemical, kinetic, electrophoretic, and hyphenated techniques.</p>
+    <div class="chapter-tags">
+      <span class="chapter-tag">Titrimetry</span>
+      <span class="chapter-tag">TLC / HPTLC / HPLC / GC</span>
+      <span class="chapter-tag">UV/Vis · NIRS · NMR</span>
+      <span class="chapter-tag">Fluorimetry</span>
+      <span class="chapter-tag">Electrochemical</span>
+      <span class="chapter-tag">Capillary Electrophoresis</span>
+      <span class="chapter-tag">Hyphenated Techniques</span>
+    </div>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="mech">
+    <div class="mech-head mh-blue">Why Analytical Techniques Matter in Drug Development</div>
+    <div class="mech-body">
+      <p>The contribution of chemistry, pharmacology, microbiology and biochemistry has set a standard in drug discovery. From the commencement of official pharmaceutical analysis, analytical assay methods were included in compendial monographs to characterize the quality of bulk drug materials. In modern practice, from drug development to post-marketing, analytical techniques play a role in:</p>
+      <ul class="blist">
+        <li>Understanding physical and chemical stability of the drug</li>
+        <li>Influencing dosage form selection and design</li>
+        <li>Quantifying and identifying impurities above established thresholds</li>
+        <li>Assessing toxicity profiles of impurities distinct from the API</li>
+        <li>Assessing drug content in marketed products</li>
+        <li>Extensive application in pharmacokinetic studies (qualitative and quantitative analysis of drugs and metabolites)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CLINICAL TRIAL PHASES -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">0</div>
+    <h3>Clinical Trial Phases — Context</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Phase</th><th>Subjects</th><th>Key Questions</th></tr>
+      <tr><td><strong>Phase 1</strong></td><td>50–200 healthy subjects (or patients not expected to benefit)</td><td>Is the IMP safe in humans? · Pharmacokinetics (what does the body do to the IMP?) · Pharmacodynamics (what does the IMP do to the body?) · Will the IMP work in patients?</td></tr>
+      <tr><td><strong>Phase 2</strong></td><td>100–400 patients with the target disease</td><td>Is the IMP safe in patients? · Does the IMP seem to work?</td></tr>
+      <tr><td><strong>Phase 3</strong></td><td>1,000–5,000 patients with the target disease</td><td>Is the IMP really safe? · Does the IMP really work?</td></tr>
+      <tr><td><strong>Phase 4</strong></td><td>Many thousands or millions of patients</td><td>Pharmacovigilance — just how safe is the new medicine? · How does it compare with similar medicines?</td></tr>
+    </table>
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);margin-bottom:2rem;font-family:'DM Mono',monospace;">IMP = Investigational Medicinal Product. Source: Association of the British Pharmaceutical Industry, 2007.</p>
+
+  <!-- TITRIMETRIC -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">1</div>
+    <h3>Titrimetric Techniques</h3>
+  </div>
+  <div class="callout co-info"><strong>Historical note:</strong> Origin of titrimetric methods dates to the 18th century. Gay–Lussac invented the volumetric method in 1835, leading to the modern term "titration."</div>
+  <div class="mech">
+    <div class="mech-head mh-blue">Principle</div>
+    <div class="mech-body">
+      <p>Titration involves the addition of one solution of <strong>known concentration (titrant / titrator)</strong> to a known volume of a solution of <strong>unknown concentration (titrand / analyte)</strong> until the reaction reaches neutralization, indicated by a color change or potentiometric endpoint.</p>
+      <p>The <strong>equivalence point</strong> is the point at which stoichiometric amounts of reactants have fully reacted — not the same as the <strong>end point</strong> (the observable signal from the indicator). The end point is designed to approximate the equivalence point as closely as possible.</p>
+    </div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-blue">Key Terms</div>
+      <ul class="blist">
+        <li><strong>Titrant (Titrator):</strong> Solution of known concentration added from a burette</li>
+        <li><strong>Titrand (Analyte):</strong> Solution of unknown concentration being analyzed</li>
+        <li><strong>Equivalence point:</strong> Stoichiometric completion — reactants fully consumed</li>
+        <li><strong>End point:</strong> Observable signal (color change, pH or current change) indicating equivalence has been reached</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Advantages</div>
+      <ul class="blist">
+        <li>Time-saving and labor-efficient</li>
+        <li>High precision</li>
+        <li>No need for reference standards</li>
+        <li>Relatively simple instrumentation</li>
+        <li>Applicable to kinetic measurements to establish reaction rates</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Modern Developments</div>
+      <ul class="blist">
+        <li>Spread of non-aqueous titration methods</li>
+        <li>Expanded application to very weak acids and bases</li>
+        <li>Potentiometric endpoint detection (improves precision)</li>
+        <li>Functional group analysis procedures</li>
+        <li>Integration with automated instrumentation</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Pharmaceutical Applications</div>
+      <ul class="blist">
+        <li>Captopril, albendazole, gabapentin — commercial dosage form analysis</li>
+        <li>Sparfloxacin — by non-aqueous titration</li>
+        <li>Estimation of degradation products of pharmaceuticals</li>
+        <li>Assay of bulk drug materials in compendial monographs</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CHROMATOGRAPHIC -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">2</div>
+    <h3>Chromatographic Techniques</h3>
+  </div>
+  <div class="callout co-info">Chromatography is based on differential affinity of analytes for a <strong>stationary phase</strong> vs. a <strong>mobile phase</strong>. Components with greater affinity for the stationary phase travel more slowly; those with lower affinity travel faster. This differential migration causes separation.</div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">2a — Thin-Layer Chromatography (TLC)</div>
+    <div class="mech-body">
+      <p><strong>Stationary phase:</strong> Adsorbent (e.g., silica gel) coated as a thin layer on glass, plastic, or aluminium support.</p>
+      <p><strong>Mobile phase:</strong> Liquid solvent mixture that travels by capillary action.</p>
+      <p><strong>Principle (adsorption):</strong> Compounds move over the stationary phase under the influence of the mobile phase. Compounds with greater affinity for the stationary phase travel slowly; others travel faster. Separated compounds appear as spots at different positions. Identity confirmed by:</p>
+      <p><em>Rf = distance traveled by compound ÷ distance traveled by solvent front</em></p>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Adsorbent</th><th>Formula</th><th>Adsorptive Power</th></tr>
+          <tr><td>Alumina</td><td>Al₂O₃</td><td>Most strong</td></tr>
+          <tr><td>Charcoal</td><td>C</td><td>Most strong</td></tr>
+          <tr><td>Florisil</td><td>MgO/SiO₂ (anhydrous)</td><td>Most strong</td></tr>
+          <tr><td>Silica gel</td><td>SiO₂</td><td>Least strong</td></tr>
+        </table>
+      </div>
+      <p><strong>Advantages:</strong></p>
+      <ul class="blist">
+        <li>Minimal sample clean-up</li>
+        <li>Wide choice of mobile phases</li>
+        <li>High sample loading capacity</li>
+        <li>Low cost</li>
+        <li>Powerful tool for screening unknown materials in bulk drugs</li>
+      </ul>
+      <p><strong>Applications:</strong> Steroids, celecoxib, noscapine determination; impurity profiling and identification in early drug development.</p>
+      <p><strong>Quantitative use:</strong> Spot elution followed by spectrophotometric measurement enables quantitative analysis.</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">2b — High-Performance TLC (HPTLC)</div>
+    <div class="mech-body">
+      <p>Same principle as TLC (adsorption; capillary mobile phase; affinity-based separation) but uses finer particle size adsorbents, automated sample application, and densitometric scanning for detection.</p>
+      <p><strong>Key advantage:</strong> Multiple samples and standards are developed simultaneously but independently on each plate → increased reliability. The entire chromatogram is evaluated with a variety of parameters without time limits.</p>
+      <p><strong>Advantages over TLC:</strong></p>
+      <ul class="blist">
+        <li>Fast separation with short analysis time</li>
+        <li>Simultaneous multi-sample analysis</li>
+        <li>Quantitative densitometric scanning</li>
+        <li>Increased reliability and reproducibility</li>
+        <li>Works well for complex or crude samples</li>
+      </ul>
+      <p><strong>Applications:</strong> Ethinyl estradiol, cyproterone, alfuzosin, tramadol, pentazocine quantitation.</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">2c — High-Performance Liquid Chromatography (HPLC)</div>
+    <div class="mech-body">
+      <p>HPLC is an advanced form of liquid chromatography used in separating complex mixtures of molecules in chemical and biological systems. It first appeared for bulk drug material assay in 1980 and has become the <strong>principal, most widely used method</strong> in therapeutic substance analysis.</p>
+      <p><strong>Principle:</strong> Separation is based on the distribution of the analyte between a mobile phase (eluent) and a stationary phase (column packing material). Different chemical structures lead to different intermolecular interactions with the packing material → different "on-column" time → different retention times → separation.</p>
+      <p><strong>System components in order:</strong></p>
+      <ul class="blist">
+        <li><strong>Solvent reservoir</strong> — holds the mobile phase (eluent)</li>
+        <li><strong>Pump</strong> — delivers eluent at high pressure, constant and pulseless flow (minimizes signal drift and noise)</li>
+        <li><strong>Injection valve</strong> — introduces analyte into the eluent stream</li>
+        <li><strong>Column</strong> — contains stationary phase where separation occurs</li>
+        <li><strong>Detector</strong> — identifies and quantifies analytes after elution</li>
+        <li><strong>Data processing unit</strong> — converts signals to chromatogram output</li>
+      </ul>
+
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Detector Type</th><th>Principle</th><th>Best For</th><th>Notes</th></tr>
+          <tr><td><strong>UV Detector</strong></td><td>Measures UV absorbance of analyte exiting column</td><td>UV-absorbing compounds (aromatics, conjugated systems)</td><td>Can monitor several wavelengths concurrently via multiple wavelength scanning</td></tr>
+          <tr><td><strong>PDA (Photodiode Array)</strong></td><td>Lined array of photodiodes senses a range of wavelengths simultaneously</td><td>Peak purity analysis; method development</td><td>One injection detects all UV-absorbing compounds in the range. Can analyze peak purity by matching spectra within a peak. Applied in Iloperidone method development.</td></tr>
+          <tr><td><strong>VWD (Variable Wavelength)</strong></td><td>Single wavelength at a time</td><td>Targeted detection at optimum wavelength</td><td>Sample must be injected multiple times with changing wavelength to ensure all peaks are detected</td></tr>
+          <tr><td><strong>Refractive Index (RI)</strong></td><td>Detects changes in refractive index of eluent</td><td>Non-UV absorbing analytes: alcohols, sugars, carbohydrates, fatty acids, polymers</td><td>Lowest sensitivity of all detectors; suitable at high analyte concentrations</td></tr>
+          <tr><td><strong>Electrochemical</strong></td><td>Responds to oxidizable or reducible substances; electrical output from electron flow at electrode surfaces</td><td>Catecholamines, phenols, easily oxidized/reduced drugs</td><td>Highly sensitive for electroactive compounds</td></tr>
+        </table>
+      </div>
+      <p><strong>Note on accuracy:</strong> HPLC specificity, precision, and accuracy are excellent — but only attainable if wide-ranging system suitability tests are performed before analysis.</p>
+    </div>
+  </div>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    HPLC has become indispensable in pharmaceutical analysis due to its high throughput, sensitivity, and selectivity — applied throughout drug development: product characterization, drug discovery, metabolism studies (in vitro and in vivo), and identification of impurities and degradation products. <a href="https://www.nature.com/articles/s41598-025-33868-w" target="_blank">Scientific Reports, Nature (2025)</a>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">2d — Gas Chromatography (GC)</div>
+    <div class="mech-body">
+      <p>Gas chromatography is a powerful separation technique for <strong>volatile organic compounds</strong>, capable of detecting traces down to <strong>parts per trillion</strong> in some cases.</p>
+      <p><strong>Principle:</strong> Sample is injected and enters a carrier gas stream (helium or nitrogen) which transports it into the separation column. Components are separated based on volatility and interaction with the stationary phase. The detector measures quantity of components that exit the column. A standard sample of known concentration is used for calibration — peak retention time and area of standard vs. test sample determine analyte concentration.</p>
+      <p><strong>Main constraint:</strong> Comparative non-volatility of most drug substances means <strong>derivatization is virtually compulsory</strong> — chemical derivatization converts non-volatile drugs to volatile derivatives before analysis.</p>
+      <p><strong>Additional limitation:</strong> High-molecular-mass products (polypeptides) or thermally unstable antibiotics cannot be analyzed by GC.</p>
+      <p><strong>Applications:</strong></p>
+      <ul class="blist">
+        <li>Isotretinoin and cocaine — drug assay</li>
+        <li>Residual solvents in betamethasone valerate</li>
+        <li>Impurity analysis in pharmaceutical formulations</li>
+        <li>Gas liquid chromatography plays a substantial role in therapeutic substance analysis</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SPECTROSCOPIC -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">3</div>
+    <h3>Spectroscopic Techniques</h3>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">3a — Spectrophotometry (UV/Vis)</div>
+    <div class="mech-body">
+      <p>Spectrophotometry is the <strong>quantitative measurement of the reflection or transmission properties</strong> of a material as a function of wavelength. Methods based on natural UV absorption and chemical reactions form an important group in pharmacopoeias.</p>
+      <p><strong>Advantages:</strong> Low time and labour consumption; excellent precision.</p>
+      <p><strong>Colorimetric methods are based on three principles:</strong></p>
+      <ul class="blist">
+        <li><em>Complex-formation reaction:</em> Drug reacts with a reagent to form a colored complex</li>
+        <li><em>Oxidation-reduction process:</em> Redox reaction produces a measurable color change</li>
+        <li><em>Catalytic effect:</em> Drug catalyzes a color-producing reaction</li>
+      </ul>
+      <p><strong>Applications:</strong></p>
+      <ul class="blist">
+        <li><strong>Blue tetrazolium assay</strong> — determination of corticosteroid drug formulations</li>
+        <li>Determination of <strong>cardiac glycosides</strong></li>
+        <li>Routine assay of bulk materials in compendial monographs</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">3b — Near-Infrared Spectroscopy (NIRS)</div>
+    <div class="mech-body">
+      <p>NIRS is a rapid and <strong>non-destructive procedure</strong> that provides multi-component analysis of almost any matrix. It has gained wide appreciation in the pharmaceutical industry for <strong>raw material testing, product quality control, and process monitoring</strong>.</p>
+      <p><strong>Principle:</strong> NIRS measures the absorption of electromagnetic radiation at wavelengths from <strong>750 to 2500 nm</strong>. Absorptions correspond to overtones and combinations of vibrational modes involving <strong>C–H, O–H, and N–H</strong> chemical bonds. The resulting spectrum is unique to a sample — acting as a <strong>"fingerprint."</strong> Chemical and physical properties of organic molecules are encoded in this spectrum.</p>
+      <p><strong>NIR spectrometer components:</strong></p>
+      <ul class="blist">
+        <li>Light source</li>
+        <li>Beam splitter system (wavelength selector)</li>
+        <li>Sample compartment</li>
+        <li>Optical detector</li>
+        <li>Data processing/analyzing system</li>
+      </ul>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Light Source</th><th>Properties</th><th>Issues</th></tr>
+          <tr><td><strong>QTH (Quartz-Tungsten-Halogen) lamps</strong></td><td>Most commonly used; low cost; high intensity; continuous spectral output</td><td>Low energy efficiency; heat generation; temperature and vibration sensitivity; long start-up times</td></tr>
+          <tr><td><strong>LEDs</strong></td><td>Higher efficiency; lower power requirements; no excess heat</td><td>Costly; not yet widely adopted in NIR spectrometers</td></tr>
+        </table>
+      </div>
+      <p><strong>Measurement modes:</strong></p>
+      <ul class="blist">
+        <li>Transmittance</li>
+        <li>Interactance</li>
+        <li>Transflectance</li>
+        <li>Diffuse transmittance</li>
+        <li>Diffuse reflectance (most commonly applied)</li>
+      </ul>
+      <p>Choice depends on sample phase (solid/liquid), translucency, and particle size.</p>
+      <p><strong>Advantages:</strong></p>
+      <ul class="blist">
+        <li>Easy sample preparation with no pre-treatments required</li>
+        <li>Fiber optic probes allow remote measurement</li>
+        <li>Chemical and physical parameters determined from a single spectrum</li>
+        <li>Non-destructive — sample can be recovered</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">3c — Nuclear Magnetic Resonance Spectroscopy (NMR)</div>
+    <div class="mech-body">
+      <p>Since the first report in 1996 describing NMR for drug molecule screening, NMR-based analysis has grown rapidly. It is now applied in:</p>
+      <ul class="blist">
+        <li>Quantitative analysis to determine drug impurities</li>
+        <li>Characterization of drug product composition</li>
+        <li>Quantification of drugs in pharmaceutical formulations and biological fluids</li>
+      </ul>
+      <p><strong>Principle:</strong> Many nuclei have spin and all nuclei are electrically charged. When an external magnetic field is applied, an energy transfer is possible between the base (ground) energy level and a higher energy level. This transfer takes place at a wavelength corresponding to <strong>radio frequencies</strong>. When the spin returns to its base level, energy is emitted at the same frequency. The signal is measured and processed to yield an NMR spectrum.</p>
+      <p><strong>In practice:</strong> The sample is placed in a magnetic field. Nuclei are excited with radio waves into nuclear magnetic resonance, detected by sensitive radio receivers. The <em>intramolecular magnetic field</em> around each atom changes the resonance frequency (chemical shift) → gives access to electronic structure and functional group identity.</p>
+      <p><strong>What NMR provides:</strong></p>
+      <ul class="blist">
+        <li>Definitive identification of monomolecular organic compounds</li>
+        <li>Detailed structure, dynamics, reaction state, and chemical environment information</li>
+        <li>Identification of chiral drugs, polymorphs, and impurities</li>
+      </ul>
+      <p><strong>Most common types:</strong> Proton NMR (¹H-NMR) and Carbon-13 NMR (¹³C-NMR). Applicable to any sample containing nuclei with spin.</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-blue">3d — Fluorimetry & Phosphorimetry</div>
+    <div class="mech-body">
+      <p>Fluorescence spectrometry provides <strong>high sensitivity without loss of specificity or precision</strong>. Its application in quantitative analysis of drugs in dosage forms and biological fluids continues to grow.</p>
+      <p><strong>Fluorescence principle:</strong></p>
+      <ul class="blist">
+        <li>A molecule absorbs a photon → enters an excited singlet state (S₁)</li>
+        <li>Upon relaxation, the molecule releases a photon — fluorescence emission</li>
+        <li>The emitted photon always has <strong>lower energy</strong> (longer wavelength) than the absorbed photon — the Stokes shift</li>
+        <li>Example: Fluorescein excited at ~500 nm (blue); emits at ~530 nm (green)</li>
+        <li>Each dye has an excitation spectrum and an emission spectrum, each with a characteristic peak</li>
+      </ul>
+      <p><strong>Phosphorescence:</strong></p>
+      <ul class="blist">
+        <li>Related to fluorescence — molecule absorbs radiation but does <strong>not immediately re-emit</strong></li>
+        <li>Intersystem crossing from excited singlet state (S₁) to longer-lived triplet state (T₁) occurs</li>
+        <li>Delayed emission from T₁ → S₀ = phosphorescence</li>
+        <li>Both are forms of <strong>photoluminescence</strong></li>
+      </ul>
+      <p>The <strong>Jablonski diagram</strong> illustrates these transitions: Absorption → S₁/S₂ → Internal conversion/vibrational relaxation → Fluorescence (S₁→S₀) or Intersystem crossing → T₁ → Phosphorescence (T₁→S₀).</p>
+    </div>
+  </div>
+
+  <!-- ELECTROCHEMICAL -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">4</div>
+    <h3>Electrochemical Methods</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-blue">Overview & Principle</div>
+    <div class="mech-body">
+      <p>Electrochemical techniques deal with:</p>
+      <ul class="blist">
+        <li>The study of chemical changes caused by the passage of an electrical current</li>
+        <li>The production of electrical energy by chemical reaction</li>
+      </ul>
+      <p>These methods use a measurement of <strong>potential, charge, or current</strong> to determine an analyte's concentration or to characterize an analyte's reactivity. They are both <strong>qualitative and quantitative</strong> — based on electrochemical phenomena occurring within a medium or at phase boundaries.</p>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="card-title ct-blue">Potentiometry</div><p>Measures potential difference between two electrodes. Used in pH meters, ion-selective electrodes, and as endpoint detection in potentiometric titrations.</p></div>
+    <div class="card"><div class="card-title ct-blue">Voltammetry</div><p>Measures current as a function of applied potential. Subtypes:</p><ul class="blist"><li>Cyclic voltammetry</li><li>Differential pulse voltammetry</li><li>Square-wave voltammetry</li></ul><p>Example: clioquinol behavior studied using glassy carbon electrode over wide pH range.</p></div>
+    <div class="card"><div class="card-title ct-blue">Conductometry</div><p>Measures electrical conductivity of a solution. Used in precipitation and acid-base titrations for endpoint detection.</p></div>
+    <div class="card"><div class="card-title ct-blue">Colorimetry (Electrochemical)</div><p>Color-based electrochemical detection systems used in specific analytical setups alongside other electrochemical detection modes.</p></div>
+    <div class="card"><div class="card-title ct-blue">Dielectrometry</div><p>Measures dielectric properties of materials. Used for moisture determination and detection of non-conducting substances.</p></div>
+  </div>
+
+  <!-- KINETIC -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">5</div>
+    <h3>Kinetic Methods of Analysis</h3>
+  </div>
+  <div class="callout co-info">Kinetic methods have been developing since the 1950s and are undergoing major resurgence due to advancements in principles, automated instrumentation, data analysis methods, and analytical applications.</div>
+  <div class="mech">
+    <div class="mech-head mh-blue">Principle</div>
+    <div class="mech-body">
+      <p>Kinetic methods use the <strong>rate of a chemical or physical process</strong> to determine an analyte's concentration. Particularly useful for reactions too slow for other analytical methods. For fast kinetics, automation allows sampling rates of <strong>more than 100 samples per hour</strong>.</p>
+    </div>
+  </div>
+  <div class="g3">
+    <div class="card">
+      <div class="card-title ct-blue">Chemical Kinetic Methods</div>
+      <p>Use the rate of a chemical reaction and either integrated or differential rate law.</p>
+      <p><strong>Integral method:</strong> Measure concentration at one or more time points after initiation → use integrated rate law.</p>
+      <p><strong>Differential method:</strong> Measure reaction rate at time t → use differential rate law.</p>
+      <p>Important application: <strong>Quantitative analysis of enzymes and substrates</strong>, and characterization of enzyme catalysis.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Radiochemical Methods</div>
+      <p>Take advantage of <strong>decay of radioactive isotopes</strong>.</p>
+      <ul class="blist">
+        <li>Direct measurement of decay rate determines isotope concentration</li>
+        <li><strong>Neutron activation:</strong> Induces radioactivity in non-radioactive analytes</li>
+        <li><strong>Isotope dilution:</strong> Radioactively-labeled analyte spiked into sample as internal standard</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Flow Injection Analysis (FIA)</div>
+      <p>A liquid sample is injected into a moving, non-segmented, uninterrupted carrier stream. The injected sample forms a zone, transported to a detector that continuously records changes in absorbance, electrode potential, or other physical parameters.</p>
+      <p><strong>NOT a separation technique</strong> — all components travel with the carrier stream. A second sample can be introduced before the first reaches the detector → ideal for rapid throughput.</p>
+      <p><strong>4 Stages:</strong></p>
+      <ul class="blist">
+        <li>Injection</li>
+        <li>Dispersion</li>
+        <li>Detection</li>
+        <li>Washout</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CE -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">6</div>
+    <h3>Electrophoretic Methods — Capillary Electrophoresis (CE)</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-blue">Principle & Advantages</div>
+    <div class="mech-body">
+      <p>CE is based on the <strong>separation of charged analytes through a small capillary under the influence of an electric field</strong>. Solutes are perceived as peaks as they pass through the detector; peak area is proportional to concentration → allows quantitative estimation.</p>
+      <p><strong>Advantages over HPLC:</strong></p>
+      <ul class="blist">
+        <li>More efficient separation</li>
+        <li>Faster analysis time</li>
+        <li>Only nanoliter injection volumes required</li>
+        <li>Takes place mostly under aqueous conditions</li>
+        <li>Smaller amount of sample and reagent consumed</li>
+      </ul>
+      <p><strong>Modes of CE:</strong></p>
+      <ul class="blist">
+        <li><strong>Capillary Zone Electrophoresis (CZE):</strong> Simplest mode; separation based on charge-to-size ratio in buffer-filled capillary</li>
+        <li><strong>Micellar Electrokinetic Chromatography (MEKC):</strong> Surfactant micelles act as pseudostationary phase; allows separation of neutral compounds</li>
+        <li><strong>Isotachophoresis (ITP):</strong> Uses leading and terminating electrolyte system; good for preconcentration</li>
+        <li><strong>Capillary Gel Electrophoresis (CGE):</strong> Gel-filled capillary separates by size; for nucleic acids and proteins</li>
+        <li><strong>Isoelectric Focusing (IEF):</strong> Separation based on isoelectric point (pI) in a pH gradient; for protein characterization</li>
+        <li><strong>Affinity CE:</strong> Uses specific biological interactions (antibody-antigen, receptor-ligand) for highly selective separations</li>
+      </ul>
+      <p>Applied to pharmaceutical purity testing, bioanalysis of drugs, biopolymer analysis, and inorganic ion analysis.</p>
+    </div>
+  </div>
+
+  <!-- SIA -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">7</div>
+    <h3>Sequential Injection Analysis (SIA)</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-blue">Overview</div>
+    <div class="mech-body">
+      <p>FIA was created by Stewart (USA) and Ruzicka & Hansen (Denmark) as the first generation of flow analysis automation. A second generation — <strong>Sequential Injection Analysis (SIA)</strong> — was developed by Ruzicka and Marshall in 1990.</p>
+      <p>Like FIA, SIA is a non-segmented continuous flow arrangement based on controlled dispersion. However, its mode of operation is based on <strong>programmable flow</strong> — using a single pump and multi-position selection valve.</p>
+      <p><strong>Advantages over FIA:</strong></p>
+      <ul class="blist">
+        <li>Economy of reagents</li>
+        <li>Elevated sampling rates</li>
+        <li>Reduced waste generation</li>
+        <li>Greater automation flexibility</li>
+      </ul>
+      <p><strong>Pharmaceutical applications:</strong> Applied to solid matrices, pastes (ointments, creams), liquids (emulsions, suspensions, solutions) for determination of active ingredients in quality control of pharmaceutical formulations.</p>
+    </div>
+  </div>
+
+  <!-- HYPHENATED -->
+  <div class="section-hd">
+    <div class="section-num sn-blue">8</div>
+    <h3>Hyphenated Techniques</h3>
+  </div>
+  <div class="callout co-info"><strong>Definition:</strong> The coupling of a separation technique with an on-line detection technique leads to the development of a hyphenated technique. The last two decades saw remarkable advancement in these techniques for pharmaceutical and therapeutic analysis.</div>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    HPLC coupled with UV, fluorescence, or mass spectrometry has become the method of choice for bioanalytical method development, combining high separation efficiency with sensitive and selective detection across drug development stages. <a href="https://www.omicsonline.org/open-access-pdfs/advances-in-high-performance-liquid-chromatography-hplctechniques-for-pharmaceutical-analysis-a-comprehensive-review.pdf" target="_blank">Journal of Analytical & Bioanalytical Techniques (2024)</a>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-blue">LC-MS (Liquid Chromatography–Mass Spectrometry)</div>
+      <p>HPLC separation coupled with mass spectrometry detection. Provides structural identification and quantitation simultaneously. Method of choice for bioanalytical development.</p>
+      <p><strong>Application:</strong> Meloxicam in biological samples and pharmaceutical formulations (HPLC-UV or MS/MS detection).</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">LC-ESI-MS (Electrospray Ionization)</div>
+      <p>Liquid chromatography with electrospray ionization–mass spectrometry. For qualitative and quantitative determination of drug metabolites.</p>
+      <p><strong>Application:</strong> Metabolite analysis of Rhizome coptidis in rat urine; simultaneous determination of L-ascorbic acid and acetylsalicylic acid in aspirin effervescent tablets.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">GC-MS (Gas Chromatography–Mass Spectrometry)</div>
+      <p>GC separation coupled with mass spectrometry. Provides definitive identification of volatile compounds.</p>
+      <p><strong>Application:</strong> Identification of recreational drug (diphenyl-2-pyrrolidinemethanol) and its metabolites in rat urine.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">LC-MS/MS (Tandem Mass Spectrometry)</div>
+      <p>Two stages of mass spectrometry — highest selectivity and sensitivity for complex matrices. Gold standard for pharmacokinetic studies.</p>
+      <p><strong>Applications:</strong></p>
+      <ul class="blist">
+        <li>Drug-drug interaction studies (rabeprazole + clopidogrel)</li>
+        <li>Detection of carbapenemase activity from bacterial isolates</li>
+        <li>Determination of parabens in food</li>
+        <li>Pharmacokinetic profiling of CYP substrates (caffeine, warfarin, omeprazole, metoprolol, midazolam) in mini pigs</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">CE-MS</div>
+      <p>Capillary electrophoresis coupled with mass spectrometry. Combines the high separation efficiency of CE with the identification power of MS. Applied in analysis of pharmaceuticals.</p>
+    </div>
+    <div class="card">
+      <div class="card-title ct-blue">Environmental Application of LC-MS/MS</div>
+      <p>Water samples from Langat River (Malaysia) extracted by <strong>solid phase extraction (SPE)</strong> and analyzed by LC-MS/MS → confirmed presence of mefenamic acid, salicylic acid, and glibenclamide in all river water samples, demonstrating the role of hyphenated techniques in environmental pharmaceutical surveillance.</p>
+    </div>
+  </div>
+
+</div>
+</section>
+<div class="chapter-divider"></div>
+
+<!-- ════════════════════════════════════════
+     UNIT 3 — AST
+════════════════════════════════════════ -->
+<section id="unit3" class="chapter">
+<div class="container">
+
+  <div class="chapter-hero ch3" data-num="3">
+    <div class="chapter-num">Unit Three · Clinical Application</div>
+    <h2>Antimicrobial Susceptibility Testing — Disk Diffusion Method</h2>
+    <p>Antimicrobial Susceptibility Testing (AST) sits at the intersection of clinical microbiology, pharmacology, and public health. It provides clinicians with the data needed to choose the correct antibiotic for a given infection, while simultaneously generating the epidemiological intelligence that drives antibiotic policy and resistance surveillance. This unit covers the complete Kirby-Bauer disk diffusion method, the Stokes method, quality control procedures, and the major resistance mechanisms.</p>
+    <div class="chapter-tags">
+      <span class="chapter-tag">Kirby-Bauer Method</span>
+      <span class="chapter-tag">Stokes Method</span>
+      <span class="chapter-tag">MRSA · VRE · VISA</span>
+      <span class="chapter-tag">ESBL · AmpC · Carbapenemases</span>
+      <span class="chapter-tag">CLSI Guidelines</span>
+      <span class="chapter-tag">Quality Control</span>
+    </div>
+  </div>
+
+  <!-- DEFINITIONS -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">0</div>
+    <h3>Definitions & Purpose</h3>
+  </div>
+  <div class="def-grid">
+    <div class="def-card dc-wine">
+      <div class="def-term">AST — Definition</div>
+      <div class="def-body">The determination of the <strong>least amount of an antimicrobial chemotherapeutic agent</strong> that will inhibit the growth of a microorganism <em>in vitro</em>.</div>
+    </div>
+    <div class="def-card dc-wine">
+      <div class="def-term">Purpose of AST</div>
+      <div class="def-body">
+        <ul style="list-style:none;padding:0">
+          <li style="padding:2px 0 2px 1.2rem;position:relative"><span style="position:absolute;left:0;color:var(--wine)">•</span> Guide clinicians in antibiotic selection</li>
+          <li style="padding:2px 0 2px 1.2rem;position:relative"><span style="position:absolute;left:0;color:var(--wine)">•</span> Accumulate epidemiological resistance data</li>
+          <li style="padding:2px 0 2px 1.2rem;position:relative"><span style="position:absolute;left:0;color:var(--wine)">•</span> Formulate antibiotic policy</li>
+          <li style="padding:2px 0 2px 1.2rem;position:relative"><span style="position:absolute;left:0;color:var(--wine)">•</span> Surveillance of community and hospital outbreaks</li>
+        </ul>
+      </div>
+    </div>
+    <div class="def-card dc-wine">
+      <div class="def-term">AST Methods</div>
+      <div class="def-body">
+        <p><strong>Disk Diffusion:</strong> Kirby-Bauer method, Stokes method</p>
+        <p><strong>MIC:</strong> Broth dilution method, Agar dilution method</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    Early and accurate antimicrobial susceptibility results are crucial in sepsis treatment. Direct disk diffusion testing using positive blood culture broth provides results one day earlier than standard colony-based methods, demonstrating high predictive value and specificity for clinically important resistance phenotypes including MRSA and ESBL-producing Enterobacterales. <a href="https://www.mdpi.com/2076-2607/13/2/398" target="_blank">Microorganisms, MDPI (2025)</a>
+  </div>
+
+  <!-- KIRBY-BAUER -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">1</div>
+    <h3>Kirby-Bauer (Disk Diffusion) Method</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-wine">Principle</div>
+    <div class="mech-body">
+      <p>Paper disks impregnated with an antimicrobial agent are placed on agar medium uniformly seeded with the test organism. A <strong>concentration gradient</strong> of the antibiotic forms by diffusion outward from the disk. Growth of the test organism is inhibited in the zone surrounding the disk where the antibiotic concentration exceeds the organism's MIC. The diameter of this <strong>zone of inhibition</strong> is measured and interpreted against CLSI breakpoints.</p>
+    </div>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1a</div>
+    <h3>Media Selection</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Medium</th><th>Used For</th><th>Key Properties</th></tr>
+      <tr><td><strong>Mueller-Hinton Agar (MHA)</strong></td><td>Non-fastidious organisms</td><td>Acceptable batch-to-batch reproducibility · Low thymidine content (↑thymidine antagonizes sulphonamides) · pH 7.2–7.4 · Thickness 4 mm · Poured at 45–50°C</td></tr>
+      <tr><td><strong>MHBA (5% Sheep Blood Agar)</strong></td><td>S. pneumoniae · Beta/alpha/non-haemolytic streptococci</td><td>Incubate 37°C with 5% CO₂</td></tr>
+      <tr><td><strong>MHCA & HTM</strong></td><td>Haemophilus spp.</td><td>Incubate 37°C with 5% CO₂</td></tr>
+      <tr><td><strong>GC Agar</strong></td><td>Neisseria gonorrhoeae</td><td>Supplemented with growth factors</td></tr>
+    </table>
+  </div>
+  <div class="callout co-warn"><strong>Why MHA?</strong> MHA is preferred because: it shows acceptable batch-to-batch reproducibility; it is best for non-fastidious organisms; its low thymidine content prevents antagonism of sulphonamides and trimethoprim. Increased thymidine in the medium antagonizes the activity of sulphonamides.</div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1b</div>
+    <h3>Antibiotic Disks</h3>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-wine">Commercial Disk Handling</div>
+      <p>On receipt, check:</p>
+      <ul class="blist">
+        <li>Manufacturing date</li>
+        <li>Expiry date</li>
+        <li>Lot number</li>
+      </ul>
+      <p>Verify potency using ATCC strains. Storage:</p>
+      <ul class="blist">
+        <li>Long-term: −20°C or −70°C</li>
+        <li>Routine use: 4°C–8°C</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-wine">In-House (Paper Disk) Preparation</div>
+      <p>Antibiotic solution always prepared from <strong>pure substance</strong>. Stock concentrations depend on required disk strength.</p>
+      <p><strong>Example — Ampicillin (needed: 2000 µg/ml for 10 µg disk):</strong></p>
+      <ul class="blist">
+        <li>1 mg = 1000 µg</li>
+        <li>2 mg = 2000 µg</li>
+        <li>20 mg = 2000 µg/10 ml</li>
+        <li>200 mg = 2000 µg/100 ml</li>
+      </ul>
+      <p>Some antibiotics dissolved in organic solvent; others in sterile distilled water. Use only minimum volume of organic solvent to stabilize the antimicrobial powder.</p>
+    </div>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1c</div>
+    <h3>Inoculum Preparation</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-wine">McFarland Turbidity Standard</div>
+    <div class="mech-body">
+      <p>McFarland Standard uses BaSO₄ — a barium sulfate turbidity standard that mimics known bacterial density.</p>
+      <div class="g2">
+        <div class="infobox">
+          <p><strong>0.5 McFarland</strong> = 2 × 10⁸ CFU/ml</p>
+          <p>Used for Gram-negative bacilli (GNB) and fast-growing organisms</p>
+        </div>
+        <div class="infobox">
+          <p><strong>1 McFarland</strong></p>
+          <p>Used for Gram-positive cocci</p>
+        </div>
+      </div>
+      <p><strong>Procedure:</strong></p>
+      <ul class="blist">
+        <li>Select <strong>10 morphologically identical, well-isolated colonies</strong></li>
+        <li>Inoculate in 1.5 ml Nutrient Broth</li>
+        <li>Incubate for 2 hours</li>
+        <li>Adjust opacity to McFarland standard (add broth to decrease turbidity, or more colony to increase)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1d</div>
+    <h3>Inoculation & Disk Placement</h3>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="card-title ct-wine">Plate Size</div><p>6 antibiotics: use <strong>85–90 mm</strong> Petri dishes · 2 antibiotics (QC): use smaller plates</p></div>
+    <div class="card"><div class="card-title ct-wine">Streaking</div><p>Streak plates within <strong>15 minutes</strong> of opacity adjustment. Streak in 3 directions for uniform lawn of growth.</p></div>
+    <div class="card"><div class="card-title ct-wine">Disk Distances</div><p>Edge-to-edge between disks: <strong>≥24 mm</strong> · Disk to plate periphery: <strong>≥15 mm</strong> · Press disks firmly to agar surface — no air gap. Avoid overlapping zones of inhibition.</p></div>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1e</div>
+    <h3>Incubation Conditions</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Medium</th><th>Temperature</th><th>Atmosphere</th><th>Duration</th></tr>
+      <tr><td>Mueller-Hinton Agar (MHA)</td><td>37°C</td><td>Ambient air</td><td>16–18 hours</td></tr>
+      <tr><td>MHBA (Blood Agar)</td><td>37°C</td><td>5% CO₂</td><td>16–18 hours</td></tr>
+      <tr><td>HTM (Haemophilus Test Medium)</td><td>37°C</td><td>5% CO₂</td><td>16–18 hours</td></tr>
+    </table>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1f</div>
+    <h3>Reading & Interpretation</h3>
+  </div>
+  <div class="g3">
+    <div class="card" style="border-top:3px solid #1a5c29">
+      <div class="card-title" style="color:#1a5c29">Susceptible (S)</div>
+      <p>Bacteria <strong>can</strong> be inhibited by the antibiotic at standard therapeutic doses. Organism is likely to respond to treatment.</p>
+    </div>
+    <div class="card" style="border-top:3px solid #854f0b">
+      <div class="card-title" style="color:#854f0b">Intermediate (I)</div>
+      <p>Bacteria can be inhibited only by <strong>higher doses</strong>. May respond if drug concentrates at the infection site (e.g., urinary tract).</p>
+    </div>
+    <div class="card" style="border-top:3px solid #7a1f1f">
+      <div class="card-title" style="color:#7a1f1f">Resistant (R)</div>
+      <p>Bacteria <strong>cannot</strong> be inhibited at achievable therapeutic concentrations. Drug not expected to be clinically effective.</p>
+    </div>
+  </div>
+  <p style="font-size:13.5px;color:var(--text-secondary);margin-bottom:1rem;">Zone size measured in <strong>diameter (mm)</strong> using a transparent ruler. Interpreted for each organism/antibiotic pair by reference to CLSI guidelines. Only pure growth is considered. Inoculum must be adequate. No antibiotic disk misplacement.</p>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1g</div>
+    <h3>Factors Affecting Zone Size</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Factor</th><th>Zone Effect</th><th>Mechanism</th></tr>
+      <tr><td>Light inoculum</td><td>Larger zone (false susceptibility)</td><td>Fewer organisms — drug inhibits less growth</td></tr>
+      <tr><td>Heavy inoculum</td><td>Smaller zone (false resistance)</td><td>More organisms require more drug — inoculum effect</td></tr>
+      <tr><td>Thin medium</td><td>Larger zone</td><td>Drug diffuses more easily through thinner agar</td></tr>
+      <tr><td>Nutritionally poor MHA</td><td>Larger zone</td><td>Organism grows poorly → apparent susceptibility</td></tr>
+      <tr><td>Acidic pH</td><td>↓ Aminoglycosides, quinolones, macrolides · ↑ Tetracyclines</td><td>pH alters drug ionization and activity</td></tr>
+      <tr><td>Alkaline pH</td><td>↑ Aminoglycosides, quinolones, macrolides · ↓ Tetracyclines · ↓ SXT</td><td>pH alters drug ionization and activity</td></tr>
+      <tr><td>Excess Ca²⁺/Mg²⁺ (cations)</td><td>↓ Zone for aminoglycosides</td><td>Divalent cations compete with aminoglycosides for binding sites</td></tr>
+      <tr><td>Low Ca²⁺/Mg²⁺</td><td>↑ Zone for aminoglycosides</td><td>Less competition → enhanced drug effect</td></tr>
+      <tr><td>Excess Zinc</td><td>↓ Zone for carbapenems</td><td>Zinc inactivates carbapenem activity</td></tr>
+      <tr><td>Low Zinc</td><td>↑ Zone for carbapenems</td><td>Less carbapenem inactivation</td></tr>
+    </table>
+  </div>
+
+  <div class="section-hd">
+    <div class="section-num sn-wine">1h</div>
+    <h3>QC Errors & Reading Problems</h3>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title ct-wine">Larger Zone — Causes</div>
+      <ul class="blist">
+        <li>Light inoculum (error in preparation)</li>
+        <li>Depth of medium too thin</li>
+        <li>MHA nutritionally unacceptable</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-wine">Smaller Zone — Causes</div>
+      <ul class="blist">
+        <li>Heavy inoculum (error in preparation)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-wine">One or More Zones Too Small/Large</div>
+      <ul class="blist">
+        <li>Measurement error</li>
+        <li>Transcription error</li>
+        <li>Random defective disk</li>
+        <li>Disk not pressed firmly to agar surface</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title ct-wine">Reading Artifacts</div>
+      <ul class="blist">
+        <li><strong>Colonies within zone:</strong> Mixed culture or resistant mutants</li>
+        <li><strong>Overlapping/indistinct zones:</strong> Disks too close or poorly streaked plate</li>
+        <li><strong>Double zone:</strong> Proteus swarming (ignore) or fastidious organisms (e.g., beta Strep)</li>
+        <li><strong>S. pneumoniae:</strong> Zone read by inhibition diameter — NOT by haemolysis pattern</li>
+        <li><strong>One QC strain out of range:</strong> That one strain is the better indicator of the QC problem</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- QC -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">2</div>
+    <h3>Quality Control (QC)</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-wine">Definition & Purpose</div>
+    <div class="mech-body">
+      <p><strong>QC in AST:</strong> Testing a standard strain of known susceptibility to the antimicrobial agent tested → ensures accuracy and reproducibility.</p>
+      <p><strong>When to perform QC:</strong></p>
+      <ul class="blist">
+        <li>Whenever new drugs or media are received</li>
+        <li>To check medium quality</li>
+        <li>To verify antibiotic potency</li>
+        <li>To detect technical errors</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>ATCC Strain</th><th>Organism</th><th>Purpose</th></tr>
+      <tr><td>ATCC 25923</td><td>S. aureus (beta-lactamase negative, oxacillin-susceptible)</td><td>General QC for Gram-positive drug testing</td></tr>
+      <tr><td>ATCC 27853</td><td>Pseudomonas aeruginosa</td><td>Aminoglycoside QC</td></tr>
+      <tr><td>ATCC 25922</td><td>E. coli (beta-lactamase negative)</td><td>General QC for Gram-negative drug testing</td></tr>
+      <tr><td>ATCC 35218</td><td>E. coli (beta-lactamase positive)</td><td>Beta-lactam + inhibitor combination QC</td></tr>
+      <tr><td>ATCC 29212</td><td>E. faecalis</td><td>Checking thymidine level in MHA</td></tr>
+      <tr><td>ATCC 700603</td><td>K. pneumoniae (ESBL positive)</td><td>ESBL detection QC</td></tr>
+    </table>
+  </div>
+
+  <!-- STOKES -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">3</div>
+    <h3>Stokes Method</h3>
+  </div>
+  <div class="mech">
+    <div class="mech-head mh-wine">Principle & Interpretation</div>
+    <div class="mech-body">
+      <p>The Stokes method uses a <strong>control organism</strong> placed on the same plate as the test organism. Both are tested with the same antibiotic disk simultaneously. The zone size of the test strain is compared against the control strain zone size.</p>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Result</th><th>Criterion</th></tr>
+          <tr><td><span class="badge bd-s">Susceptible</span></td><td>Zone of test strain is ≥ zone of control strain</td></tr>
+          <tr><td><span class="badge bd-i">Intermediate</span></td><td>Zone of test strain is <strong>2–3 mm smaller</strong> than control strain</td></tr>
+          <tr><td><span class="badge bd-r">Resistant</span></td><td>Zone of test strain is <strong>&lt;2 mm smaller</strong> than control strain</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADVANTAGES -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">4</div>
+    <h3>Advantages of Disk Diffusion</h3>
+  </div>
+  <div class="g3">
+    <div class="card"><div class="card-title ct-wine">Simplicity</div><p>Technically simple to perform. Does not require special equipment beyond a standard microbiology laboratory.</p></div>
+    <div class="card"><div class="card-title ct-wine">Economy</div><p>Reagents (disks, MHA) are inexpensive. Cost-effective for routine clinical laboratory use.</p></div>
+    <div class="card"><div class="card-title ct-wine">Clinical Communication</div><p>Results (S/I/R) are easily understood by clinicians and directly actionable in prescribing decisions.</p></div>
+    <div class="card"><div class="card-title ct-wine">Flexibility</div><p>Flexible regarding antibiotic selection — a wide range of disks can be used and customized to the institutional formulary.</p></div>
+    <div class="card"><div class="card-title ct-wine">Reproducibility</div><p>When CLSI guidelines and QC procedures are correctly followed, results are highly reproducible between laboratories.</p></div>
+  </div>
+
+  <!-- SPECIAL RESISTANCE -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">5</div>
+    <h3>Special Organisms & Resistance Mechanisms</h3>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5a — MRSA (Methicillin-Resistant S. aureus)</div>
+    <div class="mech-body">
+      <p><strong>Resistance mechanism:</strong></p>
+      <ul class="blist">
+        <li><strong>mecA gene</strong> encodes <strong>Penicillin-Binding Protein 2a (PBP2a)</strong></li>
+        <li>The active site of PBP2a does NOT bind methicillin or other beta-lactam antibiotics</li>
+        <li>PBP2a continues normal cell wall synthesis function → bacteria survive despite beta-lactam exposure</li>
+        <li>Acquisition of mecA confers resistance to <strong>ALL beta-lactam antibiotics</strong> — penicillins, cephalosporins, carbapenems, monobactams</li>
+      </ul>
+      <p><strong>Clinical significance:</strong> Significant in both hospital-acquired (HA-MRSA) and community-associated (CA-MRSA) infections.</p>
+      <p><strong>Drug of choice:</strong> Vancomycin & teicoplanin (injectable) · Rifampicin & linezolid (oral)</p>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Feature</th><th>Cefoxitin (Preferred)</th><th>Oxacillin (Older)</th></tr>
+          <tr><td>Role</td><td>Surrogate marker — induces greater PBP2a expression in mecA-containing strains; also functions as test reagent to detect resistance</td><td>Direct test of beta-lactam resistance</td></tr>
+          <tr><td>Stability</td><td>Stable drug</td><td>Degrades on storage</td></tr>
+          <tr><td>Incubation</td><td>16–18 hrs at 37°C</td><td>24 hrs at 35°C</td></tr>
+          <tr><td>Supplement</td><td>No supplement necessary</td><td>2–5% NaCl added to MHA</td></tr>
+          <tr><td>Zone readability</td><td>Clear, easily read zone with wider range</td><td>Narrow range; harder to interpret</td></tr>
+        </table>
+      </div>
+      <p><strong>CLSI breakpoints (Cefoxitin for S. aureus):</strong> R = zone ≤21 mm | S = zone ≥22 mm</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5b — Inducible Clindamycin Resistance (D-Zone Test)</div>
+    <div class="mech-body">
+      <p>Two different resistance mechanisms confer macrolide resistance in Staphylococci:</p>
+      <ul class="blist">
+        <li><strong>erm gene</strong> → methylation of 23S rRNA → resistance to erythromycin AND inducible or constitutive resistance to clindamycin</li>
+        <li><strong>msrA gene</strong> → efflux pump → resistance to erythromycin ONLY (clindamycin remains susceptible)</li>
+      </ul>
+      <p>The D-Zone test distinguishes between these mechanisms before reporting clindamycin susceptibility.</p>
+      <p><strong>D-Zone Test Procedure:</strong></p>
+      <ul class="blist">
+        <li>Place erythromycin disk (15 µg) and clindamycin disk (2 µg) on MHA seeded with the organism</li>
+        <li>Edge-to-edge distance between disks: <strong>15–26 mm</strong></li>
+        <li>Incubate: <strong>16–18 hrs at 37°C</strong></li>
+        <li>Examine for flattening of the clindamycin zone on the side facing erythromycin (D-shape)</li>
+      </ul>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Result</th><th>Observation</th><th>Report</th></tr>
+          <tr><td><strong>D-Zone Positive</strong></td><td>Flattening of clindamycin zone toward erythromycin disk (D-shaped zone)</td><td>Clindamycin RESISTANT — erm gene present</td></tr>
+          <tr><td><strong>D-Zone Negative</strong></td><td>No flattening — circular clindamycin zone</td><td>Clindamycin SUSCEPTIBLE</td></tr>
+          <tr><td><strong>Both Resistant</strong></td><td>Both erythromycin and clindamycin zones absent</td><td>Clindamycin RESISTANT — constitutive resistance</td></tr>
+        </table>
+      </div>
+      <div class="callout co-danger">The D-Zone test must be performed BEFORE reporting clindamycin as susceptible in any isolate resistant to erythromycin. Failure to do so could result in treatment failure.</div>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5c — Vancomycin Resistance in S. aureus</div>
+    <div class="mech-body">
+      <p>Strains with reduced susceptibility to vancomycin are classified as:</p>
+      <ul class="blist">
+        <li><strong>VISA</strong> (Vancomycin-Intermediate S. aureus) or <strong>GISA</strong> — MIC value of 8 µg/ml; reduced susceptibility, not full resistance</li>
+        <li><strong>VRSA</strong> (Vancomycin-Resistant S. aureus) — Full vancomycin resistance. Between 2002 and 2005, five different MRSA strains were detected for the first time with vancomycin resistance.</li>
+      </ul>
+      <p><strong>Detection methods:</strong></p>
+      <ul class="blist">
+        <li>Vancomycin disk diffusion (screening)</li>
+        <li>Vancomycin MIC — broth microdilution (gold standard)</li>
+        <li>Vancomycin agar screen: Brain Heart Infusion Agar (BHIA) with <strong>6 µg/ml vancomycin</strong> — growth = possible resistance</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5d — Vancomycin-Resistant Enterococci (VRE)</div>
+    <div class="mech-body">
+      <p>Most common in E. faecium and E. faecalis. Six resistance gene types; <strong>VanA and VanB</strong> most commonly encountered.</p>
+      <p><strong>Mechanism:</strong></p>
+      <ul class="blist">
+        <li>Alteration of terminal amino acid residues of the NAM/NAG-peptide subunits in cell wall precursor</li>
+        <li>D-alanyl-D-lactate variation results in loss of one hydrogen-bonding interaction</li>
+        <li>Loss of this single interaction causes approximately 1000-fold reduction in vancomycin affinity</li>
+      </ul>
+      <p><strong>VanA vs VanB:</strong></p>
+      <ul class="blist">
+        <li><strong>VanA:</strong> High-level resistance to vancomycin AND teicoplanin (plasmid-mediated)</li>
+        <li><strong>VanB:</strong> Variable vancomycin resistance; teicoplanin remains active</li>
+      </ul>
+      <p><strong>Detection:</strong> Disk diffusion · MIC by broth/agar dilution or E-test · BHIA with 6 µg/ml vancomycin screen plate</p>
+      <p><strong>Alert reporting:</strong> VRE must be reported to HICC, MS office, and respective wards/units.</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5e — High-Level Aminoglycoside Resistance (HLAR) in Enterococci</div>
+    <div class="mech-body">
+      <p>Enterococci are inherently resistant to low concentrations of aminoglycosides due to <em>poor drug uptake</em> by the enterococcal cell. This means aminoglycosides cannot be used as single agents for enterococcal infections.</p>
+      <p>However, low-concentration aminoglycosides combined with a cell wall-active agent (penicillin, ampicillin, vancomycin) achieve <em>synergistic killing</em> — the cell wall damage allows the aminoglycoside to enter and inhibit protein synthesis.</p>
+      <p><strong>HLAR</strong> is usually the result of <strong>enzymatic inactivation</strong> of the drugs (aminoglycoside-modifying enzymes). When HLAR is present, the synergistic effect with cell wall agents is abolished.</p>
+      <p><strong>Detection:</strong></p>
+      <ul class="blist">
+        <li>Disk diffusion: Gentamicin <strong>120 µg</strong> disk</li>
+        <li>MIC: Gentamicin ≥ <strong>500 µg/ml</strong> (HLAR threshold)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5f — Extended-Spectrum Beta-Lactamases (ESBL)</div>
+    <div class="mech-body">
+      <p>ESBLs are plasmid-mediated, diverse, complex, and rapidly evolving enzymes. They are the major mechanism of beta-lactam resistance in Gram-negative bacilli and pose a major therapeutic challenge.</p>
+      <p><strong>Substrates hydrolyzed by ESBLs:</strong></p>
+      <ul class="blist">
+        <li>Third-generation cephalosporins: cefotaxime, ceftriaxone, ceftazidime</li>
+        <li>Monobactam: aztreonam</li>
+      </ul>
+      <p>ESBLs do NOT efficiently hydrolyze cephamycins (cefoxitin) or carbapenems.</p>
+      <p><strong>Organisms where CLSI guidelines apply:</strong> K. pneumoniae, K. oxytoca, E. coli, P. mirabilis</p>
+      <p><strong>Co-resistance:</strong> ESBL producers exhibit co-resistance to aminoglycosides, quinolones, and SXT.</p>
+      <p><strong>Clinical range:</strong> Infections from UTIs to life-threatening sepsis.</p>
+
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Beta-Lactamase Class</th><th>Examples</th></tr>
+          <tr><td>Restricted-spectrum (classical)</td><td>TEM-1, TEM-2, SHV-1</td></tr>
+          <tr><td>ESBL</td><td>TEM-3 and derivatives, SHV derivatives, CTX-M (most common currently), OXA-type</td></tr>
+          <tr><td>AmpC</td><td>CMY, LAT, FOX (plasmid-mediated)</td></tr>
+          <tr><td>Carbapenemases — Serine</td><td>KPC (Class A), OXA-48 (Class D)</td></tr>
+          <tr><td>Carbapenemases — Metallo (MBL)</td><td>IMP, VIM, NDM (Class B)</td></tr>
+        </table>
+      </div>
+
+      <p><strong>ESBL Detection — Two-Step Process:</strong></p>
+      <p><em>Step 1 — Phenotypic Screening:</em></p>
+      <ul class="blist">
+        <li>Disk diffusion using extended-spectrum cephalosporins: cefotaxime (30 µg), ceftazidime (30 µg), ceftriaxone (30 µg), aztreonam (30 µg)</li>
+        <li>MIC dilution method (per CLSI screening thresholds)</li>
+      </ul>
+      <p><em>Step 2 — CLSI Confirmatory Test (Combination Disk Test):</em></p>
+      <ul class="blist">
+        <li>Disks used: Cefotaxime alone (CTX) vs Cefotaxime + Clavulanate (CTX+CL), and Ceftazidime alone vs Ceftazidime + Clavulanate</li>
+        <li>Positive ESBL: ≥ 3 two-fold (≥ 23) decrease in MIC of cefotaxime or ceftazidime when tested with clavulanate (4 µg/ml)</li>
+        <li>Also: Double Disc Approximation Test (DDAT) — distortion/expansion of zone toward clavulanate disk = ESBL positive</li>
+      </ul>
+
+      <p><strong>Drug of choice:</strong></p>
+      <ul class="blist">
+        <li>Carbapenems (imipenem, meropenem) — serious infections</li>
+        <li>Colistin, polymyxin, tigecycline — for carbapenem-resistant ESBL</li>
+        <li>Co-trimoxazole, nitrofurantoin, fosfomycin, gentamicin, amikacin, inhibitor combinations — for uncomplicated infections if susceptible</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cite-block">
+    <div class="cite-label">Peer-reviewed reference</div>
+    Rapid automated disk diffusion can detect key resistance phenotypes including ESBL, carbapenemases, and MRSA within 6–8 hours by reading zone diameters at early time points — with meropenem susceptibility effectively separating Class A, B, and D carbapenemases. <a href="https://academic.oup.com/jac/article/72/11/3063/4079888" target="_blank">Journal of Antimicrobial Chemotherapy, Oxford Academic (2017)</a>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5g — AmpC Beta-Lactamases</div>
+    <div class="mech-body">
+      <p><strong>Chromosomal AmpC:</strong> Naturally produced by Enterobacter, Serratia, Citrobacter, Morganella, Providencia. Inducible — expression increased when exposed to certain beta-lactams.</p>
+      <p><strong>Plasmid-mediated AmpC:</strong> Occur in E. coli and Klebsiella. Emergence predominantly in community-acquired infections.</p>
+      <p><strong>Resistance profile:</strong></p>
+      <ul class="blist">
+        <li>Resistant to penicillins, cephalosporins including cephamycins (cefoxitin) — unlike ESBLs which do NOT hydrolyze cefoxitin</li>
+        <li>Resistant to beta-lactam + inhibitor combinations</li>
+        <li>Usually susceptible to carbapenems</li>
+      </ul>
+      <p><strong>Co-resistance:</strong> Aminoglycosides, SXT, quinolones.</p>
+    </div>
+  </div>
+
+  <div class="mech">
+    <div class="mech-head mh-wine">5h — Carbapenemases</div>
+    <div class="mech-body">
+      <p>Carbapenems (imipenem, meropenem, ertapenem) represent the <strong>highest class of beta-lactam agents</strong> currently available. Carbapenemase production confers resistance to <strong>ALL beta-lactam antibiotics.</strong></p>
+      <div class="tbl-wrap" style="margin:1rem 0">
+        <table>
+          <tr><th>Type</th><th>Active Site</th><th>Resistance Profile</th><th>Notes</th></tr>
+          <tr><td><strong>KPC</strong> (Klebsiella pneumoniae carbapenemase)</td><td>Serine (Class A)</td><td>Resistant to ALL beta-lactams including inhibitors</td><td>Most common; plasmid-mediated; spreads between Enterobacteriaceae</td></tr>
+          <tr><td><strong>Metallo-beta-lactamases (MBL)</strong></td><td>Zinc (Class B)</td><td>Resistant to ALL beta-lactams EXCEPT monobactams (aztreonam susceptible)</td><td>IMP, VIM, NDM (NDM-1 = New Delhi metallo-beta-lactamase)</td></tr>
+          <tr><td><strong>OXA-type</strong></td><td>Serine (Class D)</td><td>Variable resistance — predominantly in Acinetobacter and Pseudomonas</td><td>OXA-48 important in Enterobacteriaceae</td></tr>
+        </table>
+      </div>
+      <p><strong>Detection methods:</strong></p>
+      <ul class="blist">
+        <li>Disk diffusion: imipenem (10 µg), meropenem (10 µg) disks</li>
+        <li>MIC: broth dilution, agar dilution</li>
+        <li>E-test (Epsilometer test)</li>
+        <li><strong>Modified Hodge Test (MHT):</strong> Lawn culture of E. coli ATCC 25922 at 1/10 of 0.5 McFarland on MHA → imipenem or meropenem disk in center → test isolate streaked outward from disk → clover-leaf distortion of E. coli growth = carbapenemase positive</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PRECAUTIONS -->
+  <div class="section-hd">
+    <div class="section-num sn-wine">6</div>
+    <h3>Important Precautions & Clinical Notes</h3>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Organism / Drug</th><th>Important Rule</th></tr>
+      <tr><td>Klebsiella spp. & Aeromonas spp.</td><td>Ampicillin is ALWAYS reported Resistant — intrinsic resistance</td></tr>
+      <tr><td>E. coli</td><td>Nitrofurantoin — Susceptible (used for UTIs)</td></tr>
+      <tr><td>Proteus spp. & Klebsiella spp.</td><td>Nitrofurantoin — Resistant (intrinsic)</td></tr>
+      <tr><td>MRSA Detection</td><td>Cefoxitin Resistant → report as MRSA; treat with vancomycin/teicoplanin</td></tr>
+      <tr><td>VRE</td><td>Vancomycin + teicoplanin resistant → ALERT: HICC, MS office, respective wards</td></tr>
+      <tr><td>S. typhi / S. paratyphi A</td><td>Newer CLSI guideline: ciprofloxacin S only if zone >31 mm; if borderline, confirm with MIC by E-test</td></tr>
+      <tr><td>S. pneumoniae</td><td>Zone of inhibition read by size — NOT by haemolysis pattern</td></tr>
+      <tr><td>Enterococcus + aminoglycosides</td><td>Test for HLAR before assuming synergy with cell wall agents — HLAR abolishes synergistic killing</td></tr>
+    </table>
+  </div>
+
+</div>
+</section>
+
+<!-- QUESTION BANNER -->
+<div class="qbanner">
+  <div class="container">
+    <h3>Ready to Test Your Knowledge?</h3>
+    <p>Practice with Short Answer questions and MCQs covering all three units — Dosage Development, Analytical Techniques, and Antimicrobial Susceptibility Testing.</p>
+    <a href="pharma_questions.html">Open Practice Questions →</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>Analysis of Therapeutic Drug Substances · Complete Study Guide</p>
+  <p style="margin-top:6px">Ongong'a RR · Analytical Techniques · AST Disk Diffusion · Dosage Development</p>
+  <p style="margin-top:12px">References: <a href="https://ijpsr.com/bft-article/a-review-on-pharmaceutical-preformulation-studies-in-formulation-and-development-of-new-drug-molecules/" target="_blank">IJPSR 2022</a> · <a href="https://www.mdpi.com/2076-3417/12/11/5333" target="_blank">Applied Sciences 2022</a> · <a href="https://www.nature.com/articles/s41598-025-33868-w" target="_blank">Sci Reports 2025</a> · <a href="https://www.mdpi.com/2076-2607/13/2/398" target="_blank">Microorganisms 2025</a> · <a href="https://academic.oup.com/jac/article/72/11/3063/4079888" target="_blank">JAC 2017</a></p>
+</footer>
+
+<a href="#" class="back-top" title="Back to top">↑</a>
+
+<script>
+// Theme toggle
+function toggleTheme() {
+  const body = document.documentElement;
+  const btn = document.getElementById('themeBtn');
+  const txt = document.getElementById('themeTxt');
+  const icon = btn.querySelector('.toggle-icon');
+  if (body.getAttribute('data-theme') === 'dark') {
+    body.removeAttribute('data-theme');
+    icon.textContent = '☀️';
+    txt.textContent = 'Light';
+    localStorage.setItem('theme', 'light');
+  } else {
+    body.setAttribute('data-theme', 'dark');
+    icon.textContent = '🌙';
+    txt.textContent = 'Dark';
+    localStorage.setItem('theme', 'dark');
+  }
+}
+// Load saved theme
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('themeBtn');
+      if (btn) {
+        btn.querySelector('.toggle-icon').textContent = '🌙';
+        document.getElementById('themeTxt').textContent = 'Dark';
+      }
+    });
+  }
+})();
+// Active nav highlight
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('section[id]');
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navBtns.forEach(btn => btn.classList.remove('active'));
+        const id = entry.target.id;
+        const btn = document.querySelector(`.nav-btn[href="#${id}"]`);
+        if (btn) btn.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15 });
+  sections.forEach(s => observer.observe(s));
+});
+</script>
+</body>
+</html>
